@@ -2,6 +2,7 @@ import { Component, Inject, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from '../services/api.service';
+import { authorizeService } from '../services/authorize.service';
 import { CorpusDetail } from '../corpus/corpus-detail';
 import { CourseDescriptionService } from '../services/courseDescription.service';
 import { AssignmentDescriptionService } from '../services/assignmentDescription.service';
@@ -10,25 +11,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { environment } from '../../environments/environment';
 export interface DialogData {
   url: string;
-}
-
-@Component({
-  selector: 'dialog-embed',
-  templateUrl: 'dialog-embed.html',
-  styleUrls: ['../corpus/dialog-embed.css'],
-})
-export class DialogEmbed {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogEmbed>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-  copyEmbedCode(inputElement) {
-    inputElement.select();
-    document.execCommand('copy');
-    inputElement.setSelectionRange(0, 0);
-    this.dialogRef.close();
-  }
-
 }
 
 @Component({
@@ -69,6 +51,7 @@ export class CorpusSearchComponent {
     private route: ActivatedRoute,
     private router: Router,
     private API: APIService,
+    public authorizeService: authorizeService,
     private sanitizer: DomSanitizer,
     private courses: CourseDescriptionService,
     private assignments: AssignmentDescriptionService,
@@ -76,22 +59,29 @@ export class CorpusSearchComponent {
     public dialog: MatDialog,
    ) {
 
-    // Additional filters.
-    this.filters = <any>[];
-    this.filters['searchByID'] = { backend_key: 'id', value: '' };
-    this.filters['toeflTotalMin'] = { backend_key: 'toefl_total_min', value: '' };
-    this.filters['toeflTotalMax'] = { backend_key: 'toefl_total_max', value: '' };
+    // First check whether there is an authorization token present.
+    if (!this.authorizeService.isAuthenticated()) {
+      // If not, redirect to the login page.
+      this.router.navigate(['/authorize']);
+    }
+    else {
+      // Additional filters.
+      this.filters = <any>[];
+      this.filters['searchByID'] = { backend_key: 'id', value: '' };
+      this.filters['toeflTotalMin'] = { backend_key: 'toefl_total_min', value: '' };
+      this.filters['toeflTotalMax'] = { backend_key: 'toefl_total_max', value: '' };
 
-    // The order in which these are pushed into the "facets" object determine their order in the sidebar.
-    this.facets = <any>[];
-    this.facets['target_language'] = { label: 'Target Language' };
-    this.facets['course'] = { label: 'Course' };
-    this.facets['macro_genre'] = { label: 'Macro Genre' };
-    this.facets['assignment_topic'] = { label: 'Topic' };
-    this.facets['draft'] = { label: 'Draft' };
-    this.facets['assignment_mode'] = { label: 'Mode of Assignment' };
-    this.facets['grouped_l1'] = { label: 'L1' };
-    this.querySearch();
+      // The order in which these are pushed into the "facets" object determine their   order in the sidebar.
+      this.facets = <any>[];
+      this.facets['target_language'] = { label: 'Target Language' };
+      this.facets['course'] = { label: 'Course' };
+      this.facets['macro_genre'] = { label: 'Macro Genre' };
+      this.facets['assignment_topic'] = { label: 'Topic' };
+      this.facets['draft'] = { label: 'Draft' };
+      this.facets['assignment_mode'] = { label: 'Mode of Assignment' };
+      this.facets['grouped_l1'] = { label: 'L1' };
+      this.querySearch();
+    }
   }
 
   textSearch(terms: string): void {
@@ -361,4 +351,22 @@ export class CorpusSearchComponent {
     });
     this.dialogToggle = false;
   }
+}
+@Component({
+  selector: 'dialog-embed',
+  templateUrl: 'dialog-embed.html',
+  styleUrls: ['../corpus/dialog-embed.css'],
+})
+export class DialogEmbed {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogEmbed>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+  copyEmbedCode(inputElement) {
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    this.dialogRef.close();
+  }
+
 }
