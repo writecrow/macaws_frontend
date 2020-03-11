@@ -8,6 +8,10 @@ header, a, a:hover, a:focus {
   color:#fff;
 }
 
+a.link {
+	text-decoration: underline;
+}
+
 header .title h2 {
   font-size:2rem;
   text-transform: uppercase;
