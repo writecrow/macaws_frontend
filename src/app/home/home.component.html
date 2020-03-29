@@ -28,3 +28,17 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <div *ngIf="resourcesTitle" class="col-md-6 pad-bottom">
+    <div class="feature secondary">
+      <h2 [innerHTML]="resourcesTitle | keepHtml"></h2>
+      <div [innerHTML]="resourcesBody | keepHtml"></div>
+    </div>
+  </div>
+  <div *ngIf="whatsNewTitle" class="col-md-6 pad-bottom">
+    <div class="feature secondary">
+      <h2 [innerHTML]="whatsNewTitle | keepHtml"></h2>
+      <div [innerHTML]="whatsNewBody | keepHtml"></div>
+    </div>
+  </div>
+</div>
