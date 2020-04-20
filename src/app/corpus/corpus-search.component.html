@@ -4,10 +4,12 @@
       <div class="facet-header" (click)="toggleFacet(key)">&#9654; {{ facets[key].label }}</div>
         <ul class="facet-items" [hidden]="!globals.corpusFacets[key]">
           <li *ngFor="let item of facets[key].values">
-            <input (click)="facetSearch(key, item.name, item.active)" name="{{ key }}_{{ item.name }}" id="{{ key }}_{{ item.name }}" type="checkbox" checked="{{ item.active }}" attr.aria-label="{{ key }} {{ item.name }}" /> {{ item.name }} 
+            <label>
+              <input (click)="facetSearch(key, item.name, item.active)" name="{{ key }}_{{ item.name }}" id="{{ key }}_{{ item.name }}" type="checkbox" checked="{{ item.active }}" attr.aria-label="{{ key }} {{ item.name }}" /> {{ item.name }} 
               <ng-container *ngIf="item.count > 1">({{item.count | number }} texts)</ng-container>
               <ng-container *ngIf="item.count == 1">({{item.count }} text)</ng-container>
               <div *ngIf="item.description" class="tooltip-toggle" attr.aria-label="{{ item.description }}">&nbsp;&#9432;</div>
+            </label>
           </li>
         </ul>
     </div>
