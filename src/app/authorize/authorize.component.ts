@@ -4,6 +4,7 @@ import { authorizeService } from '../services/authorize.service';
 import { LoginService} from '../services/login.service';
 import { Globals } from '../globals';
 import { APIService } from '../services/api.service';
+import { environment } from '../../environments/environment';
 @Component({
   templateUrl: '../authorize/authorize.component.html',
   styleUrls: ['../authorize/authorize.component.css'],
@@ -11,6 +12,8 @@ import { APIService } from '../services/api.service';
 })
 
 export class AuthorizeComponent {
+
+  public registration_url = environment.backend + 'user/register';
 
   constructor(
     private router: Router,
