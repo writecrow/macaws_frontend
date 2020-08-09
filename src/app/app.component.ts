@@ -13,8 +13,6 @@ declare const ga: any;
   providers: [authorizeService, LoginService],
 })
 export class AppComponent implements AfterViewInit {
-  public LOGO = require("../assets/logo.png");
-  public SHIELD = require("../assets/black-crow-shield.svg");
   constructor(
     private router: Router,
     public authorizeService: authorizeService,

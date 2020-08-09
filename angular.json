@@ -149,5 +149,8 @@
       }
     }
   },
-  "defaultProject": "crow"
+  "defaultProject": "crow",
+  "cli": {
+    "analytics": false
+  }
 }

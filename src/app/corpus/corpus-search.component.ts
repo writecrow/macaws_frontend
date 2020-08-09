@@ -42,7 +42,7 @@ export class CorpusSearchComponent {
   // Display toggles.
   advancedSearch: boolean = false;
   isLoaded: boolean = false;
-  searchInProgress: boolean = false;;
+  searchInProgress: boolean = false;
   toeflShow: boolean = false;
   showMetadata: boolean = true;
   dialogToggle: boolean = false;
