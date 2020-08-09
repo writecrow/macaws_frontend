@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 // this service will handle error:
 // 401 Unauthorized
 // 403 forbiden
@@ -5,7 +7,6 @@
 import { Injectable } from '@angular/core';
 // import { HttpClient, HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent, HttpErrorResponse } from "@angular/common/http";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable } from 'rxjs';
 import { Globals } from '../globals';
 
 @Injectable()
@@ -28,6 +29,6 @@ export class HandleErrorService {
         errorMessage = `Forbiden loser!!, ${err.error.message}`;
       }
     }
-    return Observable.throw(errorMessage);
+    return observableThrowError(errorMessage);
   }
 }
