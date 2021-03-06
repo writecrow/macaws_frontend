@@ -1,5 +1,7 @@
 import { mockCourseDescriptions } from '../services/mock.courseDescriptions';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class CourseDescriptionService {
 
   constructor() { }
