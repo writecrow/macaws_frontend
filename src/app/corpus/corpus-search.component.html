@@ -54,10 +54,6 @@
       <form *ngIf="searchInProgress != true" class="search-results-top">
         <h3>Matching texts: {{ resultCount | number }}</h3>
         <h3 *ngIf="subcorpusWordcount != 0">Word count of subcorpus: {{ subcorpusWordcount | number }}<div class="tooltip-toggle" aria-label="Wordcount of all texts matching any filters applied.">&nbsp;&#9432;</div></h3>
-        <button (click)="openDialog()">Embed &lt;/&gt;</button>
-        <label>
-          <input type="checkbox" (click)="toggle('showMetadata')" aria-label="Display excerpt metadata" [checked]="showMetadata" /> Display metadata
-        </label>
       </form>
       <table class="frequency" *ngIf="frequencyData.length > 0">
         <thead>
@@ -90,23 +86,66 @@
       
       <p *ngIf="excerptCount > 0 && excerptCount < resultCount"><br />Showing matching texts {{ (offset * 1) + 1 }}-{{ excerptCount }} of {{ resultCount | number }}</p>
       <p *ngIf="excerptCount > 0 && excerptCount >= resultCount"><br />Showing matching texts {{ (offset * 1) + 1 }}-{{ resultCount | number }}</p>
-      <div class="search-result" *ngFor="let result of searchResults">
-        <a routerLink="/corpus/{{ result.filename }}" [queryParams]="{ search: searchString, method: method }" routerLinkActive="active">
-          <div class="row">
-            <div class="col result" [innerHTML]="result.text"></div>
-          </div>
-          <div *ngIf="showMetadata" class="row">
-            <div class="col search-metadata">
-              <hr />
-              <strong>Term:</strong> {{result.course_semester}} {{result.course_year}}&nbsp;&nbsp; 
-              <strong>Course:</strong> {{ result.course }} <div *ngIf="result.course_description" class="tooltip-toggle" attr.aria-label="{{ result.course_description }}">&nbsp;&#9432;</div>&nbsp;&nbsp;
-              <strong>Topic:</strong> {{ result.assignment_topic }} ({{ result.assignment_mode }})&nbsp;&nbsp;
-              <strong>Draft:</strong> {{result.draft }}&nbsp;&nbsp;
-              <strong>Wordcount:</strong> {{result.wordcount }}&nbsp;&nbsp;
-            </div>
-          </div>
-        </a>
-      </div>
+
+      <form class="search-display-options">
+        <div class="search-option">
+          <label for="metadata">
+            <input name="metadata" type="checkbox" (click)="toggle('showMetadata')"
+              aria-label="Display excerpt metadata" [checked]="showMetadata" />
+            Display
+            metadata
+          </label>
+        </div>
+        <div class="search-option">
+          <label for="numbering">
+            <input name="numbering" type="checkbox" (click)="toggleNumbering()"
+              aria-label="Display concordance numbering on results"
+              [checked]="numbering == 1" />Number results
+          </label>
+        </div>
+        <div class="search-option">
+          <button class="primary" (click)="openDialog()">Embed search results
+            &lt;/&gt;</button>
+          <!-- <button class="copy-table" (click)="copyToClipboard(resulttable)">Copy table to clipboard <img class="avatar" src="/assets/copy-to-clipboard.svg" alt="" /></button> -->
+        </div>
+      </form>
+
+      <table class="search-results" #resulttable>
+        <thead class="sr-only">
+          <tr>
+            <th *ngIf="numbering == 1">Number</th>
+            <th>Excerpt</th>
+            <th *ngIf="showMetadata">Term</th>
+            <th *ngIf="showMetadata">Course</th>
+            <th *ngIf="showMetadata">Assignment</th>
+            <th *ngIf="showMetadata">Course</th>
+            <th *ngIf="showMetadata">Wordcount</th>
+            <th>Link to text</th>
+        </thead>
+        <tbody>
+          <tr class="search-result" *ngFor="let result of searchResults">
+            <td class="table-cell" *ngIf="numbering == 1">{{ result.number }}</td>
+            <td [innerHTML]="result.text"></td>
+            <td class="semester-prefix" *ngIf="showMetadata">{{result.course_semester}} {{result.course_year}}</td>
+            <td class="course-prefix" *ngIf="showMetadata">{{ result.course }} <div
+                *ngIf="result.course_description" class="tooltip-toggle"
+                attr.aria-label="{{ result.course_description }}"></div>
+            </td>
+            <td class="assignment-prefix" *ngIf="showMetadata">{{ result.assignment_topic }}
+              <div *ngIf="result.assignment_description" class="tooltip-toggle"
+                attr.aria-label="{{ result.assignment_description }}">&nbsp;&#9432;
+              </div>
+            </td>
+            <td class="draft-prefix" *ngIf="showMetadata">{{result.draft }}</td>
+            <td class="wordcount-prefix" *ngIf="showMetadata">{{ result.wordcount }}</td>
+            <td class="link-to-text"><a routerLink="/corpus/{{ result.filename }}"
+                [queryParams]="{ search: searchString, method: method }"
+                routerLinkActive="active">View text &#8594;</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       <p class="centered" *ngIf="resultCount > 20 && (offset * 1 + 1) < resultCount"><button (click)="nextPage(offset)" class="btn primary">Next Page &#x2192;</button></p>
     </div>
   </div>

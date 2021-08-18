@@ -28,6 +28,7 @@ export class CorpusSearchComponent {
   resultCount: number;
   excerptCount: number;
   offset: number = 0;
+  numbering: number = 0;
   subcorpusWordcount: number;
   filters: any[] = [];
 
@@ -201,6 +202,9 @@ export class CorpusSearchComponent {
       if (typeof routeParams.offset != 'undefined' && routeParams.offset != "") {
         this.offset = routeParams.offset;
       }
+      if (typeof routeParams.numbering !== 'undefined' && routeParams.numbering !== "") {
+        this.numbering = routeParams.numbering;
+      }
       if (typeof routeParams.toefl_total_min != 'undefined' && routeParams.toefl_total_min != "") {
         this.filters['toeflTotalMin'].value = routeParams.toefl_total_min;
       }
@@ -262,8 +266,9 @@ export class CorpusSearchComponent {
     for (let r in results) {
       results[r]["course_description"] = this.courses.getDescription(results[r].course);
       results[r]["assignment_description"] = this.assignments.getDescription(results[r].assignment, "Purdue University");
+      results[r].number = parseInt(r) + 1 + Number(this.offset);
     }
-    return results;    
+    return results;
   }
   toggleFacet(i) {
     // Used to show/hide elements in an Angular way.
@@ -276,6 +281,17 @@ export class CorpusSearchComponent {
     } else {
       this.globals.corpusFacets[i] = false;
     }
+  }
+  toggleNumbering() {
+    // Used to show/hide visualizations in an Angular way.
+    // See https://stackoverflow.com/a/35163037
+    if (this.numbering == 1) {
+      this.numbering = 0;
+    }
+    else {
+      this.numbering = 1;
+    }
+    this.router.navigate(['.'], { relativeTo: this.route, queryParams: { numbering: this.numbering }, queryParamsHandling: 'merge' });
   }
   reset() {
     this.searchString = "";
@@ -340,9 +356,9 @@ export class CorpusSearchComponent {
     this.dialogToggle = true;
     this.route.queryParams.subscribe((routeParams) => {
       if (this.dialogToggle) {
-        let uri = this.API.getCorpusSearchApiQuery(routeParams);
+        let uri = this.API.getCorpusSearchApiQuery(routeParams, true);
         const dialogRef = this.dialog.open(DialogEmbed, {
-          width: '350px',
+          width: '600px',
           data: { url: environment.backend + 'corpus/excerpts?' + uri }
         });
         dialogRef.afterClosed().subscribe(result => {
