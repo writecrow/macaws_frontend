@@ -90,7 +90,7 @@
       <form class="search-display-options">
         <div class="search-option">
           <label for="metadata">
-            <input name="metadata" type="checkbox" (click)="toggle('showMetadata')"
+            <input name="metadata" id="metadata" type="checkbox" (click)="toggle('showMetadata')"
               aria-label="Display excerpt metadata" [checked]="showMetadata" />
             Display
             metadata
@@ -98,7 +98,7 @@
         </div>
         <div class="search-option">
           <label for="numbering">
-            <input name="numbering" type="checkbox" (click)="toggleNumbering()"
+            <input name="numbering" id="numbering" type="checkbox" (click)="toggleNumbering()"
               aria-label="Display concordance numbering on results"
               [checked]="numbering == 1" />Number results
           </label>
