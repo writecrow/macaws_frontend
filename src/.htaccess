@@ -2,6 +2,10 @@ RewriteEngine On
 RewriteCond %{HTTPS} !=on
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
 
+<IfModule mod_headers.c>
+  Header set Cache-Control "private"
+</IfModule>
+
 <IfModule mod_rewrite.c>
   Options Indexes FollowSymLinks
   RewriteEngine On
@@ -21,12 +25,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
   ExpiresByType text/plain "access plus 1 month"
   ExpiresByType image/gif "access plus 1 month"
   ExpiresByType image/png "access plus 1 month"
-#  ExpiresByType image/jpeg "access plus 1 month"
-#  ExpiresByType application/x-javascript "access plus 1 month"
-#  ExpiresByType application/javascript "access plus 1 week"
-#  ExpiresByType application/x-icon "access plus 1 year"
-  # END EXPIRES�
-
+  # END EXPIRES
 </IfModule>
 
 <IfModule mod_deflate.c>
