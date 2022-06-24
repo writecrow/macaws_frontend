@@ -18,7 +18,7 @@ const appRoutes: Routes = [
   { path: 'page/:id', component: PageComponent },
   { path: 'corpus', component: CorpusSearchComponent },
   { path: 'corpus/:id', component: CorpusDetailComponent },
-  { path: 'feedback', component: ReportBugComponent },
+  { path: 'problems', component: ReportBugComponent },
   { path: 'repository/:id', component: RepositoryDetailComponent },
   { path: 'repository', component: RepositorySearchComponent },
   { path: '', component: HomeComponent },

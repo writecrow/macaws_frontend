@@ -391,6 +391,8 @@ export class CorpusSearchComponent {
 })
 export class DialogEmbed {
 
+  activeCopy = "";
+
   constructor(
     public dialogRef: MatDialogRef<DialogEmbed>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
