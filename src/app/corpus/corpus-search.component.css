@@ -41,6 +41,7 @@
 }
 .search-option {
   display: inline-block;
+  margin-right: 0.25rem;
 }
 .search-result td {
   display: inline-block;
@@ -94,6 +95,9 @@ hr {
 table thead {
   border-bottom: 2px solid rgb(114, 114, 114);
 }
+table.frequency {
+  margin-bottom: 1rem;
+}
 table.frequency td {
   font-weight: bold;
 }
@@ -123,4 +127,27 @@ tfoot, tr, td {
 
 table {
   margin-top: 1rem;
+}
+
+.emboss-right {
+  float: right;
+  margin-top: -50px;
+  margin-right: 10px
+}
+
+.copy-clipboard:before {
+  content: "Copy";
+}
+
+.copy-clipboard.copied:before {
+  content: "Copied";
+}
+
+.copy-clipboard:after {
+  padding-left: 0.25rem;
+  content: url('/assets/copy.svg');
+}
+
+.copy-clipboard.copied:after {
+  content: url('/assets/checkmark.svg');
 }

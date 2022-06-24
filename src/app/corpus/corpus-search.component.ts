@@ -11,6 +11,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { environment } from '../../environments/environment';
 export interface DialogData {
   url: string;
+  preview: string;
 }
 
 @Component({
@@ -47,6 +48,7 @@ export class CorpusSearchComponent {
   toeflShow: boolean = false;
   showMetadata: boolean = true;
   dialogToggle: boolean = false;
+  activeCopy = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -282,6 +284,17 @@ export class CorpusSearchComponent {
       this.globals.corpusFacets[i] = false;
     }
   }
+  copyToClipboard(str, id) {
+    this.activeCopy = id;
+    function listener(e) {
+      e.clipboardData.setData("text/html", str.outerHTML);
+      e.clipboardData.setData("text/plain", str.outerHTML);
+      e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+  };
   toggleNumbering() {
     // Used to show/hide visualizations in an Angular way.
     // See https://stackoverflow.com/a/35163037
@@ -358,8 +371,11 @@ export class CorpusSearchComponent {
       if (this.dialogToggle) {
         let uri = this.API.getCorpusSearchApiQuery(routeParams, true);
         const dialogRef = this.dialog.open(DialogEmbed, {
-          width: '600px',
-          data: { url: environment.backend + 'corpus/excerpts?' + uri }
+          width: 'fit-content',
+          data: {
+            url: environment.backend + 'corpus/excerpts?' + uri,
+            preview: this.sanitizer.bypassSecurityTrustResourceUrl(environment.backend + 'corpus/excerpts?' + uri)
+          }
         });
         dialogRef.afterClosed().subscribe(result => {
         });
@@ -382,7 +398,9 @@ export class DialogEmbed {
     inputElement.select();
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
-    this.dialogRef.close();
+    setTimeout(() => {
+      this.dialogRef.close();
+    }, 1000)
   }
 
 }

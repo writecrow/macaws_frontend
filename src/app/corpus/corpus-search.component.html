@@ -84,9 +84,6 @@
       </tbody>
       </table>
       
-      <p *ngIf="excerptCount > 0 && excerptCount < resultCount"><br />Showing matching texts {{ (offset * 1) + 1 }}-{{ excerptCount }} of {{ resultCount | number }}</p>
-      <p *ngIf="excerptCount > 0 && excerptCount >= resultCount"><br />Showing matching texts {{ (offset * 1) + 1 }}-{{ resultCount | number }}</p>
-
       <form class="search-display-options">
         <div class="search-option">
           <label for="metadata">
@@ -106,11 +103,13 @@
         <div class="search-option">
           <button class="primary" (click)="openDialog()">Embed search results
             &lt;/&gt;</button>
-          <!-- <button class="copy-table" (click)="copyToClipboard(resulttable)">Copy table to clipboard <img class="avatar" src="/assets/copy-to-clipboard.svg" alt="" /></button> -->
+        </div>
+        <div class="search-option">
+          <div class="tooltip-toggle" tabindex="0" aria-label="Copy the HTML of the search results to your clipboard"><button [className]="activeCopy == 'resulttable' ? 'copied secondary copy-clipboard' : 'secondary copy-clipboard'" (click)="copyToClipboard(resulttable, 'resulttable')"></button></div>
         </div>
       </form>
 
-      <table class="search-results" #resulttable>
+      <table class="search-results" #resulttable class="resulttable no-border" border="1">
         <thead class="sr-only">
           <tr>
             <th *ngIf="numbering == 1">Number</th>
@@ -118,7 +117,7 @@
             <th *ngIf="showMetadata">Term</th>
             <th *ngIf="showMetadata">Course</th>
             <th *ngIf="showMetadata">Assignment</th>
-            <th *ngIf="showMetadata">Course</th>
+            <th *ngIf="showMetadata">Draft</th>
             <th *ngIf="showMetadata">Wordcount</th>
             <th>Link to text</th>
         </thead>
