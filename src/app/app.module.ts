@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { PageComponent } from './page/page.component';
 import { CorpusSearchComponent, DialogEmbed } from './corpus/corpus-search.component';
 import { CorpusDetailComponent } from './corpus/corpus-detail.component';
+import { ReportBugComponent } from './reportbug/reportbug.component';
 import { RepositoryHelper } from './repository/repository-helper';
 import { RepositorySearchComponent } from './repository/repository-search.component';
 import { RepositoryDetailComponent } from './repository/repository-detail.component';
@@ -60,6 +61,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CorpusSearchComponent,
     CorpusDetailComponent,
     DialogEmbed,
+    ReportBugComponent,
     RepositorySearchComponent,
     RepositoryDetailComponent,
     NotFoundComponent,

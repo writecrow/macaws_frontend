@@ -15,6 +15,9 @@
           <label for="authSubmit">
             <span *ngIf="globals.isAuthenticated && !globals.authenticating"><img class="avatar" src="assets/black-crow-shield.svg" alt="Avatar of a crow" /><em>Signed in</em>&nbsp;&nbsp;</span>
             <button *ngIf="globals.isAuthenticated" name="authSubmit" class="secondary" (click)="signOut()">Sign out</button>
+        <div class="col text-right">
+          <a *ngIf="globals.isAuthenticated" routerLink="feedback">&#9993; Provide feedback</a>
+        </div>
             <button *ngIf="!globals.isAuthenticated && !globals.authenticating" name="authSubmit" class="secondary" (click)="signIn()">Sign in</button>
             <span *ngIf="globals.authenticating">Authenticating...</span>
           </label>

@@ -7,4 +7,6 @@ export class Globals {
   authenticating: boolean = false;
   corpusFacets: any[] = [];
   repositoryFacets: any[] = [];
+  currentUrl = '';
+  previousUrl = '';
 }

@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { PageComponent } from './page/page.component';
 import { CorpusSearchComponent } from './corpus/corpus-search.component';
 import { CorpusDetailComponent } from './corpus/corpus-detail.component';
+import { ReportBugComponent } from './reportbug/reportbug.component';
 import { RepositorySearchComponent } from './repository/repository-search.component';
 import { RepositoryDetailComponent } from './repository/repository-detail.component';
 
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   { path: 'page/:id', component: PageComponent },
   { path: 'corpus', component: CorpusSearchComponent },
   { path: 'corpus/:id', component: CorpusDetailComponent },
+  { path: 'feedback', component: ReportBugComponent },
   { path: 'repository/:id', component: RepositoryDetailComponent },
   { path: 'repository', component: RepositorySearchComponent },
   { path: '', component: HomeComponent },
