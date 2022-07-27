@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from '../services/api.service';
+import { authorizeService } from '../services/authorize.service';
 import { RepositoryDetail } from '../repository/repository-detail';
 import { RepositoryHelper } from '../repository/repository-helper';
 import { Globals } from '../globals';
-import { CourseDescriptionService } from '../services/courseDescription.service';
-import { AssignmentDescriptionService } from '../services/assignmentDescription.service';
 
 @Component({
   templateUrl: '../repository/repository-search.component.html',
@@ -17,65 +16,67 @@ export class RepositorySearchComponent {
   Facets: any[] = [];
   facetKeys: any[] = [];
   isLoaded: boolean;
+  noResults: boolean;
   searchInProgress: boolean;
   searchString: string;
 
   constructor(
     private route: ActivatedRoute,
+    public authorizeService: authorizeService,
     private router: Router,
     private API: APIService,
     public globals: Globals,
     private repositoryHelper: RepositoryHelper,
-    private courses: CourseDescriptionService,
-    private assignments: AssignmentDescriptionService,
   ) {
+    // First check whether there is an authorization token present.
+    if (!this.authorizeService.isAuthenticated()) {
+      // If not, redirect to the login page.
+    this.router.navigate(['/authorize'], { queryParams: {'destination': 'repository'}});
+    } else {
     // The order in which these are pushed into the "Facets" object determine their order in the sidebar.
     this.Facets = <any>[];
-    this.Facets['document_type'] = { label: 'Type', index: '3' };
-    this.Facets['topic'] = { label: 'Topic', index: '10' };
-    this.Facets['assignment'] = { label: 'Assignment', index: '0' };
-    this.Facets['institution'] = { label: 'Institution', index: '5' };
-    this.Facets['year'] = { label: 'Year', index: '9' };
-    this.Facets['semester'] = { label: 'Semester', index: '8' };
-    this.Facets['course'] = { label: 'Course', index: '1' };
-    this.Facets['mode'] = { label: 'Mode', index: '7' };
-    this.Facets['course_length'] = { label: 'Length', index: '2' };
-    this.Facets['file_type'] = { label: 'File Type', index: '4' };
-    this.querySearch(); 
-   }
+    this.Facets['target_language'] = { label: 'Target Language', index: '3' };
+    this.Facets['document_type'] = { label: 'Document Type', index: '1' };
+    this.Facets['macro_genre'] = { label: 'Macro Genre', index: '2' };
+    this.Facets['assignment_topic'] = { label: 'Topic', index: '4' };
+    this.Facets['course'] = { label: 'Course', index: '0' };
+    this.querySearch();
+    }
+  }
 
   querySearch() {
     // The main search function. Looks for the current URL parameters & sends those to the backend.
-    this.searchInProgress = true;
+    this.globals.inProgress = true;
     this.route.queryParams.subscribe((routeParams) => {
-      if (routeParams.search != 'undefined') {
+      if (routeParams.search !== 'undefined') {
         // Set the text input to the query provided in the URL.
         this.searchString = routeParams.search;
       }
       this.API.searchRepository(routeParams).subscribe(response => {
-        if (response && response.facets) {
-          this.Facets = this.prepareFacets(response.facets);
+        this.Facets = this.prepareFacets(response.facets);
+        this.searchResults = response.search_results;
+        this.isLoaded = true;
+        this.noResults = false;
+        // Do additional modifications on the returned API data.
+        this.adjustLabels(this.searchResults);
+        // If no results, tell the user.
+        if (typeof response.search_results === "undefined") {
+          this.noResults = true;
         }
-        if (response && response.search_results) {
-          this.searchResults = this.prepareSearchResults(response.search_results);
-          this.isLoaded = true;
-          // Do additional modifications on the returned API data.
-          this.adjustLabels(this.searchResults);
-        }
-        this.searchInProgress = false;
+        this.globals.inProgress = false;
       });
     });
   }
 
   textSearch(terms: string): void {
-    this.searchInProgress = true;
+    this.globals.inProgress = true;
     // Called on click of search button.
     // Merges user-supplied search term into existing URL and calls querySearch().
     this.router.navigate(['/repository'], { queryParams: { search: terms }, queryParamsHandling: 'merge' });
   }
 
   facetSearch(facetgroup, facet, active) {
-    this.searchInProgress = true;
+    this.globals.inProgress = true;
     // First, retrieve the current facetgroup & split its choices into an array.
     let selections = [];
     if (typeof this.route.snapshot.queryParams[facetgroup] !== 'undefined') {
@@ -89,8 +90,7 @@ export class RepositorySearchComponent {
       if (typeof selections[facet] === 'undefined') {
         selections.push(facet);
       }
-    }
-    else {
+    } else {
       // The clicked facet had been selected.
       // Remove it from the list of selected items for the given facetgroup.
       for (const i in selections) {
@@ -111,24 +111,19 @@ export class RepositorySearchComponent {
     this.facetKeys = Object.keys(this.Facets);
     // Loop through each of the defined facets for this repository and assign
     // values returned from the API to their object.
-    for (let name in this.Facets) {
-      let i = this.Facets[name].index;
-      let facetOutput = [];
+    // tslint:disable-next-line: forin
+    for (const name in this.Facets) {
+      const i = this.Facets[name].index;
+      const facetOutput = [];
       if (typeof facets[i][0] !== 'undefined') {
-        for (let delta in facets[i][0][name]) {
-          let values = facets[i][0][name][delta].values;
-          let data = { 'name': values.value, 'count': values.count, 'active': values.active, 'description': '' };
-          if (name == 'course') {
-            data.description = this.courses.getDescription(values.value);
-          }
-          if (name == 'assignment') {
-            data.description = this.assignments.getDescription(values.value, "Purdue  University");
-          }
+        // tslint:disable-next-line: forin
+        for (const delta in facets[i][0][name]) {
+          const values = facets[i][0][name][delta].values;
+          const data = { 'name': values.value, 'count': values.count, 'active': values.active, 'description': values.description };
           facetOutput.push(data);
         }
         this.Facets[name].values = facetOutput;
-      }
-      else {
+      } else {
         this.Facets[name].values = [];
       }
     }
@@ -137,30 +132,24 @@ export class RepositorySearchComponent {
 
   adjustLabels(searchResults) {
     // Append additional information to title for clarity.
-    for (let i in searchResults) {
+    // tslint:disable-next-line: forin
+    for (const i in searchResults) {
       searchResults[i].label = this.repositoryHelper.getLabel(
         searchResults[i].document_type,
         searchResults[i].course,
         searchResults[i].assignment,
+        searchResults[i].topic,
       );
     }
   }
 
-  prepareSearchResults(results) {
-    for (let r in results) {
-      results[r]["course_description"] = this.courses.getDescription(results[r].course);
-      results[r]["assignment_description"] = this.assignments.getDescription(results[r].assignment, "Purdue University");
-    }
-    return results;
-  }
 
   toggleFacet(i) {
     // Used to show/hide elements in an Angular way.
     // See https://stackoverflow.com/a/35163037
     if (this.globals.repositoryFacets[i] === undefined) {
       this.globals.repositoryFacets[i] = true;
-    }
-    else if (this.globals.repositoryFacets[i] === false) {
+    } else if (this.globals.repositoryFacets[i] === false) {
       this.globals.repositoryFacets[i] = true;
     } else {
       this.globals.repositoryFacets[i] = false;
