@@ -66,24 +66,25 @@ export class RepositoryDetailComponent implements OnInit {
                 if (response && response !== '') {
                   this.exactTexts = response;
                 }
-              });
-              const relatedTexts = {
-                'course': this.content.course,
-                'assignment': this.content.assignment,
-                'institution': this.content.institution,
-                'instructor': this.content.instructor,
-              };
-              // Retrieve all texts with similar metadata
-              this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
-                if (response && response !== '') {
-                  this.relatedTexts = response;
+                else {
+                  const relatedTexts = {
+                    'course': this.content.course,
+                    'assignment': this.content.assignment,
+                    'institution': this.content.institution,
+                    'instructor': this.content.instructor,
+                  };
+                  // Retrieve all texts with similar metadata
+                  this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
+                    if (response && response !== '') {
+                      this.relatedTexts = response;
+                    }
+                  });
                 }
               });
             }
 
             const repositoryParameters = {
               'course': this.content.course,
-              'assignment': this.content.assignment,
               'institution': this.content.institution,
               'instructor': this.content.instructor,
               'semester': this.content.semester,
@@ -97,7 +98,6 @@ export class RepositoryDetailComponent implements OnInit {
             });
             const relatedRepositoryParameters = {
               'course': this.content.course,
-              'assignment': this.content.assignment,
               'institution': this.content.institution,
               'exclude_id': this.content.id,
             };

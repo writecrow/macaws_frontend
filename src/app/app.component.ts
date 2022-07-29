@@ -5,7 +5,7 @@ import { LoginService } from './services/login.service';
 import { Globals } from './globals';
 
 declare var require: any;
-declare const ga: any;
+declare const gtag: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -51,8 +51,8 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        ga('set', 'page', event.urlAfterRedirects);
-        ga('send', 'pageview');
+        gtag('set', 'page', event.urlAfterRedirects);
+        gtag('send', 'pageview');
       }
     });
   }

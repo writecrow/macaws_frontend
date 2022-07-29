@@ -12,7 +12,6 @@ import { Globals } from '../globals';
 
 export class CorpusDetailComponent implements OnInit {
   content: CorpusDetail;
-  drafts: any[] = [];
   exactResources: any[] = [];
   relatedRepositoryResources: any[] = [];
   relatedTexts: any[] = [];
@@ -30,13 +29,39 @@ export class CorpusDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((routeParams) => {
-      this.drafts = [];
       this.exactResources = [];
       // Pass 2 parameters to API: the route path, and any query parameters.
       this.API.getCorpusDetailById(routeParams.id, this.route.snapshot.queryParams).subscribe(response => {
         if (response && response[0]) {
           this.content = response[0];
           this.isLoaded = true;
+          const relatedTexts = {
+            'course': this.content.course,
+            'assignment': this.content.assignment,
+            'institution': this.content.institution,
+            'instructor': this.content.instructor,
+            'exclude_id': this.content.filename,
+          };
+          // Retrieve all texts with similar metadata
+          this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
+            if (response && response !== '') {
+              this.relatedTexts = response;
+            }
+          });
+          // Retrieve repository resources that have matching metadata.
+          const repositoryParameters = {
+            'course': this.content.course,
+            'institution': this.content.institution,
+            'instructor': this.content.instructor,
+            'year': this.content.year,
+            'semester': this.content.semester,
+          };
+          this.API.getRepositoryReferenceByMetadata(repositoryParameters).subscribe(response => {
+            this.globals.inProgress = false;
+            if (response && response !== '') {
+              this.exactResources = response;
+            }
+          });
         }
         else {
           this.router.navigateByUrl('404', { skipLocationChange: true });
@@ -47,14 +72,6 @@ export class CorpusDetailComponent implements OnInit {
         this.isLoaded = true;
         this.statusMessage = 'There was a problem retrieving this resource. You can wait a moment, then try again. If the problem persists, please email the maintainers at <a href="mailto: collaborate@writecrow.org">collaborate@writecrow.org</a>, describing the search parameters you were using, and we will investigate.';
       });
-    });
-  }
-
-  // Used to sort drafts alphanumerically (final at end).
-  sortByKey(array, key) {
-    return array.sort(function (a, b) {
-      var x = a[key]; var y = b[key];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
   }
 
