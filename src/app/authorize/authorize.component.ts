@@ -23,7 +23,7 @@ export class AuthorizeComponent {
     private globals: Globals
   ) { }
 
-  ngOnInit(): void {
+  onInit(): void {
     // There is no reason for currently authenticated users to see this route.
     if (this.authorizeService.isAuthenticated()) {
       this.router.navigate(['/']);

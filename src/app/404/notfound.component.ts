@@ -12,7 +12,7 @@ export class NotFoundComponent {
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
+  onInit() {
     this.href = this.router.url;
   }
 }

@@ -370,7 +370,7 @@ export class CorpusSearchComponent {
     this.route.queryParams.subscribe((routeParams) => {
       if (this.dialogToggle) {
         let uri = this.API.getCorpusSearchApiQuery(routeParams, true);
-        const dialogRef = this.dialog.open(DialogEmbed, {
+        const dialogRef = this.dialog.open(DialogEmbedComponent, {
           width: 'fit-content',
           data: {
             url: environment.backend + 'corpus/excerpts?' + uri,
@@ -385,16 +385,16 @@ export class CorpusSearchComponent {
   }
 }
 @Component({
-  selector: 'dialog-embed',
+  selector: 'app-dialog-embed',
   templateUrl: 'dialog-embed.html',
   styleUrls: ['../corpus/dialog-embed.css'],
 })
-export class DialogEmbed {
+export class DialogEmbedComponent {
 
   activeCopy = "";
 
   constructor(
-    public dialogRef: MatDialogRef<DialogEmbed>,
+    public dialogRef: MatDialogRef<DialogEmbedComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
   copyEmbedCode(inputElement) {
     inputElement.select();

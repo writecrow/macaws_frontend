@@ -7,7 +7,7 @@
             <label>
               <input (click)="facetSearch(key, item.name, item.active)" name="{{ key }}_{{ item.name }}" id="{{ key }}_{{ item.name }}" type="checkbox" checked="{{ item.active }}" attr.aria-label="{{ key }} {{ item.name }}" /> {{ item.name }} 
               <ng-container *ngIf="item.count > 1">({{item.count | number }} texts)</ng-container>
-              <ng-container *ngIf="item.count == 1">({{item.count }} text)</ng-container>
+              <ng-container *ngIf="item.count === 1">({{item.count }} text)</ng-container>
               <div *ngIf="item.description" class="tooltip-toggle" attr.aria-label="{{ item.description }}">&nbsp;&#9432;</div>
             </label>
           </li>
@@ -25,15 +25,15 @@
           <button name="resetSubmit" class="secondary" (click)="reset()">Reset</button>
         </label>
 
-        <ng-container *ngIf="exportUrl && searchInProgress == false">
+        <ng-container *ngIf="exportUrl && searchInProgress === false">
           <button (click)="exportResults(exportUrl)" class="btn btn-dark">Export</button><div class="tooltip-toggle" aria-label="Export search results to comma-separated value (CSV) format">&nbsp;&#9432;</div>
         </ng-container>
-        <ng-container *ngIf="!exportUrl && searchInProgress == false">
+        <ng-container *ngIf="!exportUrl && searchInProgress === false">
           <button class="btn btn-disabled" disabled>Export</button><div class="tooltip-toggle" aria-label="To inquire about access to data exports, contact us at collaborate@writecrow.org">&nbsp;&#9432;</div>
         </ng-container>
         
         <span class="search-progress">
-          <span *ngIf="searchInProgress == true">
+          <span *ngIf="searchInProgress === true">
             <img class="loading" src="/assets/loading.svg" alt="Loading icon" height="50px" />
           </span>
         </span>
@@ -45,15 +45,15 @@
         <div class="details-body" [hidden]="!advancedSearch">
           <p><strong>Tip:</strong> To search by phrase, place multiple words in quotation marks</p>
           <strong>Multiple word handling: </strong>
-          <input type="radio" name="or" (click)="setOperation('or')" [checked]="keywordMode == 'or'"  aria-label="or"> Contains any word
-          <input type="radio" name="and" (click)="setOperation('and')" [checked]="keywordMode == 'and'"  aria-label="and"> Contains all words<br /><br />
+          <input type="radio" name="or" (click)="setOperation('or')" [checked]="keywordMode === 'or'"  aria-label="or"> Contains any word
+          <input type="radio" name="and" (click)="setOperation('and')" [checked]="keywordMode === 'and'"  aria-label="and"> Contains all words<br /><br />
         </div>
       </div>
     </div>
     <div class="row search-results">
-      <form *ngIf="searchInProgress != true" class="search-results-top">
+      <form *ngIf="searchInProgress !== true" class="search-results-top">
         <h3>Matching texts: {{ resultCount | number }}</h3>
-        <h3 *ngIf="subcorpusWordcount != 0">Word count of subcorpus: {{ subcorpusWordcount | number }}<div class="tooltip-toggle" aria-label="Wordcount of all texts matching any filters applied.">&nbsp;&#9432;</div></h3>
+        <h3 *ngIf="subcorpusWordcount !== 0">Word count of subcorpus: {{ subcorpusWordcount | number }}<div class="tooltip-toggle" aria-label="Wordcount of all texts matching any filters applied.">&nbsp;&#9432;</div></h3>
       </form>
       <table class="frequency" *ngIf="frequencyData.length > 0">
         <thead>
@@ -97,7 +97,7 @@
           <label for="numbering">
             <input name="numbering" id="numbering" type="checkbox" (click)="toggleNumbering()"
               aria-label="Display concordance numbering on results"
-              [checked]="numbering == 1" />Number results
+              [checked]="numbering === 1" />Number results
           </label>
         </div>
         <div class="search-option">
@@ -105,14 +105,14 @@
             &lt;/&gt;</button>
         </div>
         <div class="search-option">
-          <div class="tooltip-toggle" tabindex="0" aria-label="Copy the HTML of the search results to your clipboard"><button [className]="activeCopy == 'resulttable' ? 'copied secondary copy-clipboard' : 'secondary copy-clipboard'" (click)="copyToClipboard(resulttable, 'resulttable')"></button></div>
+          <div class="tooltip-toggle" tabindex="0" aria-label="Copy the HTML of the search results to your clipboard"><button [className]="activeCopy === 'resulttable' ? 'copied secondary copy-clipboard' : 'secondary copy-clipboard'" (click)="copyToClipboard(resulttable, 'resulttable')"></button></div>
         </div>
       </form>
 
       <table class="search-results" #resulttable class="resulttable no-border" border="1">
         <thead class="sr-only">
           <tr>
-            <th *ngIf="numbering == 1">Number</th>
+            <th *ngIf="numbering === 1">Number</th>
             <th>Excerpt</th>
             <th *ngIf="showMetadata">Term</th>
             <th *ngIf="showMetadata">Course</th>
@@ -123,7 +123,7 @@
         </thead>
         <tbody>
           <tr class="search-result" *ngFor="let result of searchResults">
-            <td class="table-cell" *ngIf="numbering == 1">{{ result.number }}</td>
+            <td class="table-cell" *ngIf="numbering === 1">{{ result.number }}</td>
             <td [innerHTML]="result.text"></td>
             <td class="semester-prefix" *ngIf="showMetadata">{{result.course_semester}} {{result.course_year}}</td>
             <td class="course-prefix" *ngIf="showMetadata">{{ result.course }} <div
