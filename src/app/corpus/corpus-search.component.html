@@ -1,7 +1,7 @@
 <div class="row" *ngIf="isLoaded">
   <div class="col-lg-3">
     <div class="facet-wrapper" *ngFor="let key of facetKeys">
-      <div class="facet-header" (click)="toggleFacet(key)">&#9654; {{ facets[key].label }}</div>
+      <div class="facet-header" [ngClass]="(globals.corpusFacets[key])?'open':'closed'" (click)="toggleFacet(key)">{{ facets[key].label }}</div>
         <ul class="facet-items" [hidden]="!globals.corpusFacets[key]">
           <li *ngFor="let item of facets[key].values">
             <label>
@@ -41,7 +41,7 @@
     </div>
     <div class="row">
       <div class="details-wrapper">
-        <div class="details-header" (click)="toggle('advancedSearch')">&#9654; Advanced Search</div>
+        <div class="details-header" [ngClass]="(advancedSearch)?'open':'closed'" (click)="toggle('advancedSearch')">Advanced Search</div>
         <div class="details-body" [hidden]="!advancedSearch">
           <p><strong>Tip:</strong> To search by phrase, place multiple words in quotation marks</p>
           <strong>Multiple word handling: </strong>
