@@ -13,23 +13,42 @@
 	</div>
   <div *ngIf="content" class="col-lg-4 panel bigger">
 		<div *ngIf="isLoaded">
-    <div *ngIf="exactResources.length">
-      <div class="facet-wrapper">
-      <div class="facet-header" [ngClass]="(globals.repositoryFacets['corpusExactResources'])?'open':'closed'" (click)="toggleFacet('corpusExactResources')">Instructor materials related to this course</div>
-      <p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactResources']">From this instructor's {{ content.course }} course, {{ content.semester }} {{ content.year }}</p>
-    	<ul [hidden]="!globals.repositoryFacets['corpusExactResources']" *ngFor="let result of exactResources">
-				<li><a routerLink="/repository/{{result.id}}" routerLinkActive="active">{{ result.topic }} {{result.type}}</a></li>
-      </ul>
-      </div>
-		</div>
-    <div *ngIf="relatedTexts.length">
-      <div class="facet-wrapper">
-      <div class="facet-header" (click)="toggleFacet('corpusRelatedTexts')" [ngClass]="(globals.repositoryFacets['corpusRelatedTexts'])?'open':'closed'">Similar texts by other students</div>
-      <p class="details-description" [hidden]="!globals.repositoryFacets['corpusRelatedTexts']">Also from this instructor's {{ content.course }}</p>
-    	<ul [hidden]="!globals.repositoryFacets['corpusRelatedTexts']" *ngFor="let result of relatedTexts">
-				<li><a routerLink="/corpus/{{result.filename}}" routerLinkActive="active">{{ result.topic }} {{ result.genre }}, {{ result.draft }} draft ({{ result.filename }})</a></li>
-      </ul>
-      </div>
+      <div *ngIf="exactResources.length">
+        <div class="facet-wrapper">
+          <div class="facet-header" [ngClass]="(globals.repositoryFacets['corpusExactResources'])?'open':'closed'" (click)="toggleFacet('corpusExactResources')">Instructor materials related to this course</div>
+            <p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactResources']">From this instructor's {{ content.course }} course {{ content.genre }} assignments</p>
+      	    <ul [hidden]="!globals.repositoryFacets['corpusExactResources']" *ngFor="let result of exactResources">
+		  	    	<li><a routerLink="/repository/{{result.id}}" routerLinkActive="active">{{result.type}}: {{ result.topic }} {{ content.genre }}</a></li>
+            </ul>
+		  	</div>
+		  </div>
+		  <div *ngIf="relatedResources.length">
+		  	<div class="facet-wrapper">
+		      <div class="facet-header" [ngClass]="(globals.repositoryFacets['corpusRelatedResources'])?'open':'closed'" (click)="toggleFacet('corpusRelatedResources')">Other instructors' materials for this course</div>
+		      	<p class="details-description" [hidden]="!globals.repositoryFacets['corpusRelatedResources']">Other instructors' {{ content.course }} course {{ content.genre }} materials</p>
+		      	<ul [hidden]="!globals.repositoryFacets['corpusRelatedResources']" *ngFor="let result of relatedResources">
+		      		<li><a routerLink="/repository/{{result.id}}" routerLinkActive="active">{{result.type}}: {{ result.topic }} {{ content.genre }}</a></li>
+		      	</ul>
+		  	</div>
+		  </div>
+		  <div *ngIf="exactTexts.length">
+		  	<div class="facet-wrapper">
+		  		<div class="facet-header" (click)="toggleFacet('corpusExactTexts')" [ngClass]="(globals.repositoryFacets['corpusExactTexts'])?'open':'closed'">Student texts from this instructor's course</div>
+		  		<p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactTexts']">From this instructor's {{ content.course }} {{ content.topic }} {{ content.genre }} assignment</p>
+		  		<ul [hidden]="!globals.repositoryFacets['corpusExactTexts']" *ngFor="let result of exactTexts">
+		  			<li><a routerLink="/corpus/{{result.filename}}" routerLinkActive="active">{{ result.topic }} {{ result.genre }}, {{ result.draft }} draft</a></li>
+		  		</ul>
+		  	</div>
+		  </div>
+      <div *ngIf="relatedTexts.length">
+        <div class="facet-wrapper">
+          <div class="facet-header" (click)="toggleFacet('corpusRelatedTexts')" [ngClass]="(globals.repositoryFacets['corpusRelatedTexts'])?'open':'closed'">Student texts from other instructors</div>
+          <p class="details-description" [hidden]="!globals.repositoryFacets['corpusRelatedTexts']">From other instructors' {{ content.course }} {{ content.genre }} assignment</p>
+      	  <ul [hidden]="!globals.repositoryFacets['corpusRelatedTexts']" *ngFor="let result of relatedTexts">
+		  	  	<li><a routerLink="/corpus/{{result.filename}}" routerLinkActive="active">{{ result.topic }} {{ result.genre }}, {{ result.draft }} draft</a></li>
+          </ul>
+		  	</div>
+		  </div>
 			<h3>Course Data</h3>
 			<table>
 				<tbody>
@@ -59,90 +78,90 @@
 					</tr>
 				</tbody>
 			</table>
-			<br />
-			<h3>Student Data</h3>
-			<table>
-				<tbody>
-					<tr *ngIf="content.l1">
-						<th scope="row">L1</th>
-						<td>{{ content.l1 }}</td>	
-					</tr>
-					<tr *ngIf="content.courses_currently_enrolled">
-						<th scope="row">Courses Currently Enrolled</th>
-						<td>{{ content.courses_currently_enrolled }}</td>
-					</tr>
-					<tr *ngIf="content.courses_previously_enrolle">
-						<th scope="row">Courses Previously Enrolled</th>
-						<td>{{ content.courses_previously_enrolle }}</td>
-					</tr>
-					<tr *ngIf="content.began_formal_education">
-						<th scope="row">Began Formal Education in Target Language</th>
-						<td>{{ content.began_formal_education }}</td>
-					</tr>
-					<tr *ngIf="content.experience_abroad">
-						<th scope="row">Experience Abroad</th>
-						<td>{{ content.experience_abroad }}</td>
-					</tr>
-					<tr *ngIf="content.year_in_school">
-						<th scope="row">Year in School</th>
-						<td>{{ content.year_in_school }}</td>	
-					</tr>
-					<tr *ngIf="content.major">
-						<th scope="row">Major</th>
-						<td>{{ content.major }}</td>	
-					</tr>
-					<tr *ngIf="content.minor">
-						<th scope="row">Minor</th>
-						<td>{{ content.minor }}</td>	
-					</tr>
-					<tr *ngIf="content.proficiency_exam">
-						<th scope="row">Proficiency Exam</th>
-						<td>{{ content.proficiency_exam }}: {{ content.proficiency_exam_score }}</td>	
-					</tr>
-					<tr *ngIf="content.target_language_practice">
-						<th scope="row">Target Language Practice</th>
-						<td>{{ content.target_language_practice }}</td>	
-					</tr>
-					<tr *ngIf="content.heritage_of_target_languag">
-						<th scope="row">Heritage of Target Language</th>
-						<td>{{ content.heritage_of_target_languag }}</td>	
-					</tr>
-				</tbody>
-			</table>
-			<br />
-			<h3>Text Data</h3>
-			<table>
-				<tbody>
-					<tr *ngIf="content.assignment_code">
-						<th scope="row">Assignment Code</th>
-						<td>{{ content.assignment_code }}</td>
-					</tr>
-					<tr *ngIf="content.assignment_mode">
-						<th scope="row">Assignment Mode</th>
-						<td>{{ content.assignment_mode }}</td>
-					</tr>
-					<tr *ngIf="content.macro_genre">
-						<th scope="row">Macro Genre</th>
-						<td>{{ content.macro_genre }}</td>
-					</tr>
-					<tr *ngIf="content.assignment_topic">
-						<th scope="row">Assignment Topic</th>
-						<td>{{ content.assignment_topic }}</td>
-					</tr>
-					<tr *ngIf="content.assignment_name">
-						<th scope="row">Assignment Name</th>
-						<td>{{ content.assignment_name }}</td>
-					</tr>
-					<tr *ngIf="content.draft">
-						<th scope="row">Draft</th>
-						<td>{{ content.draft }}</td>
-					</tr>
-					<tr *ngIf="content.wordcount">
-						<th scope="row">Wordcount</th>
-						<td>{{ content.wordcount }}</td>
-					</tr>
-				</tbody>
-			</table>
+				<br />
+				<h3>Student Data</h3>
+				<table>
+					<tbody>
+						<tr *ngIf="content.l1">
+							<th scope="row">L1</th>
+							<td>{{ content.l1 }}</td>	
+						</tr>
+						<tr *ngIf="content.courses_currently_enrolled">
+							<th scope="row">Courses Currently Enrolled</th>
+							<td>{{ content.courses_currently_enrolled }}</td>
+						</tr>
+						<tr *ngIf="content.courses_previously_enrolle">
+							<th scope="row">Courses Previously Enrolled</th>
+							<td>{{ content.courses_previously_enrolle }}</td>
+						</tr>
+						<tr *ngIf="content.began_formal_education">
+							<th scope="row">Began Formal Education in Target Language</th>
+							<td>{{ content.began_formal_education }}</td>
+						</tr>
+						<tr *ngIf="content.experience_abroad">
+							<th scope="row">Experience Abroad</th>
+							<td>{{ content.experience_abroad }}</td>
+						</tr>
+						<tr *ngIf="content.year_in_school">
+							<th scope="row">Year in School</th>
+							<td>{{ content.year_in_school }}</td>	
+						</tr>
+						<tr *ngIf="content.major">
+							<th scope="row">Major</th>
+							<td>{{ content.major }}</td>	
+						</tr>
+						<tr *ngIf="content.minor">
+							<th scope="row">Minor</th>
+							<td>{{ content.minor }}</td>	
+						</tr>
+						<tr *ngIf="content.proficiency_exam">
+							<th scope="row">Proficiency Exam</th>
+							<td>{{ content.proficiency_exam }}: {{ content.proficiency_exam_score }}</td>	
+						</tr>
+						<tr *ngIf="content.target_language_practice">
+							<th scope="row">Target Language Practice</th>
+							<td>{{ content.target_language_practice }}</td>	
+						</tr>
+						<tr *ngIf="content.heritage_of_target_languag">
+							<th scope="row">Heritage of Target Language</th>
+							<td>{{ content.heritage_of_target_languag }}</td>	
+						</tr>
+					</tbody>
+				</table>
+				<br />
+				<h3>Text Data</h3>
+				<table>
+					<tbody>
+						<tr *ngIf="content.assignment_code">
+							<th scope="row">Assignment Code</th>
+							<td>{{ content.assignment_code }}</td>
+						</tr>
+						<tr *ngIf="content.assignment_mode">
+							<th scope="row">Assignment Mode</th>
+							<td>{{ content.assignment_mode }}</td>
+						</tr>
+						<tr *ngIf="content.genre">
+							<th scope="row">Macro Genre</th>
+							<td>{{ content.genre }}</td>
+						</tr>
+						<tr *ngIf="content.topic">
+							<th scope="row">Assignment Topic</th>
+							<td>{{ content.topic }}</td>
+						</tr>
+						<tr *ngIf="content.assignment_name">
+							<th scope="row">Assignment Name</th>
+							<td>{{ content.assignment_name }}</td>
+						</tr>
+						<tr *ngIf="content.draft">
+							<th scope="row">Draft</th>
+							<td>{{ content.draft }}</td>
+						</tr>
+						<tr *ngIf="content.wordcount">
+							<th scope="row">Wordcount</th>
+							<td>{{ content.wordcount }}</td>
+						</tr>
+					</tbody>
+				</table>
 		</div>
 	</div>
 </div>

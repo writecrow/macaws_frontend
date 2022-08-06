@@ -1,6 +1,7 @@
 export class CorpusDetail {
   assignment: string;
   assignment_description: string;
+  assignment_name: string;
   body: string;
   college: string;
   concordance_views_field: string;
@@ -11,6 +12,7 @@ export class CorpusDetail {
   draft: string;
   filename: string;
   gender: string;
+  genre: string;
   id: string;
   institution: string;
   instructor: string;

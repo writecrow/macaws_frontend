@@ -18,4 +18,5 @@ export class RepositoryDetail {
   topic: string;
   uri: string;
   year: string;
+  genre: string;
 }

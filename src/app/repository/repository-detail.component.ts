@@ -55,23 +55,21 @@ export class RepositoryDetailComponent implements OnInit {
             if (this.content.assignment !== '') {
               const exactTexts = {
                 'course': this.content.course,
-                'assignment': this.content.assignment,
+                'assignment_name': this.content.topic,
+                'genre': this.content.genre,
                 'institution': this.content.institution,
                 'instructor': this.content.instructor,
-                'semester': this.content.semester,
-                'year': this.content.year,
               };
               // Retrieve all texts with similar metadata
               this.API.getCorpusReferenceByMetadata(exactTexts).subscribe(response => {
-                if (response && response !== '') {
+                if (response && response.length !== 0) {
                   this.exactTexts = response;
+                  console.log(this.exactTexts);
                 }
                 else {
                   const relatedTexts = {
                     'course': this.content.course,
-                    'assignment': this.content.assignment,
                     'institution': this.content.institution,
-                    'instructor': this.content.instructor,
                   };
                   // Retrieve all texts with similar metadata
                   this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
@@ -87,8 +85,6 @@ export class RepositoryDetailComponent implements OnInit {
               'course': this.content.course,
               'institution': this.content.institution,
               'instructor': this.content.instructor,
-              'semester': this.content.semester,
-              'year': this.content.year,
               'exclude_id': this.content.id,
             };
             this.API.getRepositoryReferenceByMetadata(repositoryParameters).subscribe(response => {
@@ -99,7 +95,8 @@ export class RepositoryDetailComponent implements OnInit {
             const relatedRepositoryParameters = {
               'course': this.content.course,
               'institution': this.content.institution,
-              'exclude_id': this.content.id,
+              'genre': this.content.genre,
+              'exclude_instructor': this.content.instructor,
             };
             this.API.getRepositoryReferenceByMetadata(relatedRepositoryParameters).subscribe(response => {
               this.globals.inProgress = false;

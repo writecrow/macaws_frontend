@@ -13,7 +13,8 @@ import { Globals } from '../globals';
 export class CorpusDetailComponent implements OnInit {
   content: CorpusDetail;
   exactResources: any[] = [];
-  relatedRepositoryResources: any[] = [];
+  relatedResources: any[] = [];
+  exactTexts: any[] = [];
   relatedTexts: any[] = [];
   isLoaded: boolean;
   statusMessage: string = "";
@@ -35,12 +36,25 @@ export class CorpusDetailComponent implements OnInit {
         if (response && response[0]) {
           this.content = response[0];
           this.isLoaded = true;
-          const relatedTexts = {
+          const exactTexts = {
             'course': this.content.course,
-            'assignment': this.content.assignment,
+            'assignment_name': this.content.assignment_name,
+            'genre': this.content.genre,
             'institution': this.content.institution,
             'instructor': this.content.instructor,
             'exclude_id': this.content.filename,
+          };
+          // Retrieve all texts with similar metadata
+          this.API.getCorpusReferenceByMetadata(exactTexts).subscribe(response => {
+            if (response && response !== '') {
+              this.exactTexts = response;
+            }
+          });
+          const relatedTexts = {
+            'course': this.content.course,
+            'institution': this.content.institution,
+            'exclude_id': this.content.filename,
+            'excluded_instructor': this.content.instructor,
           };
           // Retrieve all texts with similar metadata
           this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
@@ -53,8 +67,7 @@ export class CorpusDetailComponent implements OnInit {
             'course': this.content.course,
             'institution': this.content.institution,
             'instructor': this.content.instructor,
-            'year': this.content.year,
-            'semester': this.content.semester,
+            'genre': this.content.genre,
           };
           this.API.getRepositoryReferenceByMetadata(repositoryParameters).subscribe(response => {
             this.globals.inProgress = false;
@@ -62,6 +75,19 @@ export class CorpusDetailComponent implements OnInit {
               this.exactResources = response;
             }
           });
+          const relatedRepository = {
+            'course': this.content.course,
+            'institution': this.content.institution,
+            'genre': this.content.genre,
+            'exclude_instructor': this.content.instructor,
+          };
+          this.API.getRepositoryReferenceByMetadata(relatedRepository).subscribe(response => {
+            this.globals.inProgress = false;
+            if (response && response !== '') {
+              this.relatedResources = response;
+            }
+          });
+
         }
         else {
           this.router.navigateByUrl('404', { skipLocationChange: true });
