@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { authorizeService } from './services/authorize.service';
 import { LoginService } from './services/login.service';
@@ -12,7 +12,7 @@ declare const gtag: any;
   styleUrls: ['./app.component.css', './macaws.overrides.css'],
   providers: [authorizeService, LoginService],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnInit {
   constructor(
     private router: Router,
     public authorizeService: authorizeService,
@@ -28,9 +28,10 @@ export class AppComponent implements AfterViewInit {
     });
   }
 
-  onInit(): void {
+  ngOnInit(): void {
     this.globals.authenticating = false;
     this.globals.statusMessage = "";
+    console.log(this.authorizeService.isAuthenticated());
     if (this.authorizeService.isAuthenticated()) {
       this.globals.isAuthenticated = true;
     }

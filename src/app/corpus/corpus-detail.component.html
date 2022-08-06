@@ -16,7 +16,7 @@
       <div *ngIf="exactResources.length">
         <div class="facet-wrapper">
           <div class="facet-header" [ngClass]="(globals.repositoryFacets['corpusExactResources'])?'open':'closed'" (click)="toggleFacet('corpusExactResources')">Instructor materials related to this course</div>
-            <p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactResources']">From this instructor's {{ content.course }} course {{ content.genre }} assignments</p>
+            <p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactResources']">From this instructor's {{ content.course }} course</p>
       	    <ul [hidden]="!globals.repositoryFacets['corpusExactResources']" *ngFor="let result of exactResources">
 		  	    	<li><a routerLink="/repository/{{result.id}}" routerLinkActive="active">{{result.type}}: {{ result.topic }} {{ content.genre }}</a></li>
             </ul>
@@ -24,7 +24,7 @@
 		  </div>
 		  <div *ngIf="relatedResources.length">
 		  	<div class="facet-wrapper">
-		      <div class="facet-header" [ngClass]="(globals.repositoryFacets['corpusRelatedResources'])?'open':'closed'" (click)="toggleFacet('corpusRelatedResources')">Other instructors' materials for this course</div>
+		      <div class="facet-header" [ngClass]="(globals.repositoryFacets['corpusRelatedResources'])?'open':'closed'" (click)="toggleFacet('corpusRelatedResources')">"{{ content.genre }}" materials from other instructors</div>
 		      	<p class="details-description" [hidden]="!globals.repositoryFacets['corpusRelatedResources']">Other instructors' {{ content.course }} course {{ content.genre }} materials</p>
 		      	<ul [hidden]="!globals.repositoryFacets['corpusRelatedResources']" *ngFor="let result of relatedResources">
 		      		<li><a routerLink="/repository/{{result.id}}" routerLinkActive="active">{{result.type}}: {{ result.topic }} {{ content.genre }}</a></li>
@@ -33,8 +33,8 @@
 		  </div>
 		  <div *ngIf="exactTexts.length">
 		  	<div class="facet-wrapper">
-		  		<div class="facet-header" (click)="toggleFacet('corpusExactTexts')" [ngClass]="(globals.repositoryFacets['corpusExactTexts'])?'open':'closed'">Student texts from this instructor's course</div>
-		  		<p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactTexts']">From this instructor's {{ content.course }} {{ content.topic }} {{ content.genre }} assignment</p>
+		  		<div class="facet-header" (click)="toggleFacet('corpusExactTexts')" [ngClass]="(globals.repositoryFacets['corpusExactTexts'])?'open':'closed'">Other texts from this instructor's {{ content.course }} course</div>
+		  		<p class="details-description" [hidden]="!globals.repositoryFacets['corpusExactTexts']">From this instructor's {{ content.course }}</p>
 		  		<ul [hidden]="!globals.repositoryFacets['corpusExactTexts']" *ngFor="let result of exactTexts">
 		  			<li><a routerLink="/corpus/{{result.filename}}" routerLinkActive="active">{{ result.topic }} {{ result.genre }}, {{ result.draft }} draft</a></li>
 		  		</ul>
@@ -42,7 +42,7 @@
 		  </div>
       <div *ngIf="relatedTexts.length">
         <div class="facet-wrapper">
-          <div class="facet-header" (click)="toggleFacet('corpusRelatedTexts')" [ngClass]="(globals.repositoryFacets['corpusRelatedTexts'])?'open':'closed'">Student texts from other instructors</div>
+          <div class="facet-header" (click)="toggleFacet('corpusRelatedTexts')" [ngClass]="(globals.repositoryFacets['corpusRelatedTexts'])?'open':'closed'">"{{ content.genre }}" texts from other instructors</div>
           <p class="details-description" [hidden]="!globals.repositoryFacets['corpusRelatedTexts']">From other instructors' {{ content.course }} {{ content.genre }} assignment</p>
       	  <ul [hidden]="!globals.repositoryFacets['corpusRelatedTexts']" *ngFor="let result of relatedTexts">
 		  	  	<li><a routerLink="/corpus/{{result.filename}}" routerLinkActive="active">{{ result.topic }} {{ result.genre }}, {{ result.draft }} draft</a></li>

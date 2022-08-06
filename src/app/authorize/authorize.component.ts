@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { authorizeService } from '../services/authorize.service';
 import { LoginService} from '../services/login.service';
@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
   providers: [authorizeService],
 })
 
-export class AuthorizeComponent {
+export class AuthorizeComponent implements OnInit {
 
   public registration_url = environment.backend + 'user/register';
 
@@ -23,7 +23,7 @@ export class AuthorizeComponent {
     private globals: Globals
   ) { }
 
-  onInit(): void {
+  ngOnInit(): void {
     // There is no reason for currently authenticated users to see this route.
     if (this.authorizeService.isAuthenticated()) {
       this.router.navigate(['/']);

@@ -55,8 +55,6 @@ export class RepositoryDetailComponent implements OnInit {
             if (this.content.assignment !== '') {
               const exactTexts = {
                 'course': this.content.course,
-                'assignment_name': this.content.topic,
-                'genre': this.content.genre,
                 'institution': this.content.institution,
                 'instructor': this.content.instructor,
               };
@@ -64,12 +62,13 @@ export class RepositoryDetailComponent implements OnInit {
               this.API.getCorpusReferenceByMetadata(exactTexts).subscribe(response => {
                 if (response && response.length !== 0) {
                   this.exactTexts = response;
-                  console.log(this.exactTexts);
                 }
                 else {
                   const relatedTexts = {
                     'course': this.content.course,
                     'institution': this.content.institution,
+                    'genre': this.content.genre,
+                    'excluded_instructor': this.content.instructor,
                   };
                   // Retrieve all texts with similar metadata
                   this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {

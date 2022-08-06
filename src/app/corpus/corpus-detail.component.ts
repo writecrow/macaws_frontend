@@ -38,8 +38,6 @@ export class CorpusDetailComponent implements OnInit {
           this.isLoaded = true;
           const exactTexts = {
             'course': this.content.course,
-            'assignment_name': this.content.assignment_name,
-            'genre': this.content.genre,
             'institution': this.content.institution,
             'instructor': this.content.instructor,
             'exclude_id': this.content.filename,
@@ -53,7 +51,8 @@ export class CorpusDetailComponent implements OnInit {
           const relatedTexts = {
             'course': this.content.course,
             'institution': this.content.institution,
-            'exclude_id': this.content.filename,
+            'assignment_name': this.content.assignment_name,
+            'genre': this.content.genre,
             'excluded_instructor': this.content.instructor,
           };
           // Retrieve all texts with similar metadata
@@ -67,7 +66,6 @@ export class CorpusDetailComponent implements OnInit {
             'course': this.content.course,
             'institution': this.content.institution,
             'instructor': this.content.instructor,
-            'genre': this.content.genre,
           };
           this.API.getRepositoryReferenceByMetadata(repositoryParameters).subscribe(response => {
             this.globals.inProgress = false;

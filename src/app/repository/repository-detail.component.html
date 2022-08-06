@@ -36,8 +36,8 @@
     </div>
     <div *ngIf="exactTexts.length">
       <div class="facet-wrapper">
-        <div class="facet-header" [ngClass]="(globals.repositoryFacets['repositoryExactTexts'])?'open':'closed'" (click)="toggleFacet('repositoryExactTexts')">Student texts from this instructor's assignment</div>
-        <p class="details-description" [hidden]="!globals.repositoryFacets['repositoryExactTexts']">From this instructor's {{ content.course }} {{ content.topic }} {{ content.genre }} assignment</p>
+        <div class="facet-header" [ngClass]="(globals.repositoryFacets['repositoryExactTexts'])?'open':'closed'" (click)="toggleFacet('repositoryExactTexts')">Student texts from this instructor's course</div>
+        <p class="details-description" [hidden]="!globals.repositoryFacets['repositoryExactTexts']">From this instructor's {{ content.course }} course</p>
         <ul [hidden]="!globals.repositoryFacets['repositoryExactTexts']" *ngFor="let result of exactTexts">
           <li><a routerLink="/corpus/{{ result.filename }}" routerLinkActive="active">{{ result.assignment_name }}, {{ result.draft }} draft ({{ result.filename }})</a></li>
         </ul>
@@ -45,8 +45,8 @@
     </div>
     <div *ngIf="relatedTexts.length">
       <div class="facet-wrapper">
-        <div class="facet-header" [ngClass]="(globals.repositoryFacets['repositoryRelatedTexts'])?'open':'closed'" (click)="toggleFacet('repositoryRelatedTexts')">Student texts from this course</div>
-        <p class="details-description" [hidden]="!globals.repositoryFacets['repositoryRelatedTexts']">From other {{ content.institution }} instructors' {{ content.course }} courses</p>
+        <div class="facet-header" [ngClass]="(globals.repositoryFacets['repositoryRelatedTexts'])?'open':'closed'" (click)="toggleFacet('repositoryRelatedTexts')">"{{ content.genre }}" student texts from this course</div>
+        <p class="details-description" [hidden]="!globals.repositoryFacets['repositoryRelatedTexts']">Student texts from other instructors' {{ content.course }} {{ content.genre }} assignment</p>
         <ul [hidden]="!globals.repositoryFacets['repositoryRelatedTexts']" *ngFor="let result of relatedTexts">
           <li><a routerLink="/corpus/{{ result.filename }}" routerLinkActive="active">{{ result.assignment_name }} {{ result.genre }} assignment, {{ result.draft }} draft</a></li>
         </ul>

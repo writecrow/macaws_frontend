@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,13 +6,13 @@ import { Router } from '@angular/router';
   styleUrls: ['../404/notfound.component.css']
 })
 
-export class NotFoundComponent {
+export class NotFoundComponent implements OnInit {
 
   public href: string = "";
 
   constructor(private router: Router) { }
 
-  onInit() {
+  ngOnInit() {
     this.href = this.router.url;
   }
 }
