@@ -35,10 +35,10 @@ export class RepositorySearchComponent {
     } else {
     // The order in which these are pushed into the "Facets" object determine their order in the sidebar.
     this.Facets = <any>[];
-    this.Facets['language'] = { label: 'Target Language', index: '3' };
-    this.Facets['type'] = { label: 'Document Type', index: '1' };
-    this.Facets['genre'] = { label: 'Macro Genre', index: '2' };
-    this.Facets['topic'] = { label: 'Topic', index: '4' };
+    this.Facets['target_language'] = { label: 'Target Language', index: '3' };
+    this.Facets['document_type'] = { label: 'Document Type', index: '1' };
+    this.Facets['macro_genre'] = { label: 'Macro Genre', index: '2' };
+    this.Facets['assignment_topic'] = { label: 'Topic', index: '4' };
     this.Facets['course'] = { label: 'Course', index: '0' };
     this.querySearch();
     }
