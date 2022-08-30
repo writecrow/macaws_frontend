@@ -48,11 +48,23 @@ export class CorpusDetailComponent implements OnInit {
               this.exactTexts = response;
             }
           });
+          // const relatedTexts = {
+          //   'course': this.content.course,
+          //   'institution': this.content.institution,
+          //   'assignment_name': this.content.assignment_name,
+          //   'genre': this.content.genre,
+          //   'excluded_instructor': this.content.instructor,
+          // };
+          // // Retrieve all texts with similar metadata
+          // this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
+          //   if (response && response !== '') {
+          //     this.relatedTexts = response;
+          //   }
+          // });
           const relatedTexts = {
             'course': this.content.course,
             'institution': this.content.institution,
-            'assignment_name': this.content.assignment_name,
-            'genre': this.content.genre,
+            'assignment_code': this.content.assignment,
             'excluded_instructor': this.content.instructor,
           };
           // Retrieve all texts with similar metadata

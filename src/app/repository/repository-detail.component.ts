@@ -57,25 +57,26 @@ export class RepositoryDetailComponent implements OnInit {
                 'course': this.content.course,
                 'institution': this.content.institution,
                 'instructor': this.content.instructor,
+                'assignment_code': this.content.assignment,
+                'semester': this.content.semester,
+                'year': this.content.year,
               };
-              // Retrieve all texts with similar metadata
+              // Retrieve all texts same instructor & assignment code.
               this.API.getCorpusReferenceByMetadata(exactTexts).subscribe(response => {
                 if (response && response.length !== 0) {
                   this.exactTexts = response;
                 }
-                else {
-                  const relatedTexts = {
-                    'course': this.content.course,
-                    'institution': this.content.institution,
-                    'genre': this.content.genre,
-                    'excluded_instructor': this.content.instructor,
-                  };
-                  // Retrieve all texts with similar metadata
-                  this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
-                    if (response && response !== '') {
-                      this.relatedTexts = response;
-                    }
-                  });
+              });
+              const relatedTexts = {
+                'course': this.content.course,
+                'institution': this.content.institution,
+                'assignment_code': this.content.assignment,
+                'excluded_instructor': this.content.instructor,
+              };
+              // Retrieve all texts with similar metadata
+              this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
+                if (response && response !== '') {
+                  this.relatedTexts = response;
                 }
               });
             }
@@ -94,7 +95,7 @@ export class RepositoryDetailComponent implements OnInit {
             const relatedRepositoryParameters = {
               'course': this.content.course,
               'institution': this.content.institution,
-              'genre': this.content.genre,
+              'assigment_code': this.content.assignment,
               'exclude_instructor': this.content.instructor,
             };
             this.API.getRepositoryReferenceByMetadata(relatedRepositoryParameters).subscribe(response => {
