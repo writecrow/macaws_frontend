@@ -135,7 +135,7 @@
                 attr.aria-label="{{ result.assignment_description }}">&nbsp;&#9432;
               </div>
             </td>
-            <td class="draft-prefix" *ngIf="showMetadata">{{result.draft }}</td>
+            <td class="draft-prefix" *ngIf="showMetadata">{{result.draft }} {{ result.instructor }}</td>
             <td class="wordcount-prefix" *ngIf="showMetadata">{{ result.wordcount }}</td>
             <td class="link-to-text"><a routerLink="/corpus/{{ result.filename }}"
                 [queryParams]="{ search: searchString, method: method }"

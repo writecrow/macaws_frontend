@@ -18,6 +18,7 @@ export class CorpusDetail {
   instructor: string;
   program: string;
   semester: string;
+  student: string;
   toefl_reading: string;
   toefl_writing: string;
   toefl_speaking: string;

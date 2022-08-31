@@ -43,21 +43,15 @@ export class RepositoryDetailComponent implements OnInit {
         this.API.getRepositoryReferenceByMetadata(repositoryRequest).subscribe(response => {
           if (response && response[0]) {
             this.content = response[0];
-            this.content.label = this.repositoryHelper.getLabel(
-              this.content.document_type,
-              this.content.course,
-              this.content.assignment,
-              this.content.topic
-            );
             this.content.uri = environment.backend + this.content.file;
             this.content.embed_uri = this.sanitizer.bypassSecurityTrustResourceUrl("https://docs.google.com/gview?url=" + this.content.uri + "&embedded=true");
             this.isLoaded = true;
-            if (this.content.assignment !== '') {
+            if (this.content.assignment_code !== '') {
               const exactTexts = {
                 'course': this.content.course,
                 'institution': this.content.institution,
                 'instructor': this.content.instructor,
-                'assignment_code': this.content.assignment,
+                'code': this.content.assignment_code,
                 'semester': this.content.semester,
                 'year': this.content.year,
               };
@@ -70,7 +64,7 @@ export class RepositoryDetailComponent implements OnInit {
               const relatedTexts = {
                 'course': this.content.course,
                 'institution': this.content.institution,
-                'assignment_code': this.content.assignment,
+                'code': this.content.assignment_code,
                 'excluded_instructor': this.content.instructor,
               };
               // Retrieve all texts with similar metadata
@@ -95,7 +89,7 @@ export class RepositoryDetailComponent implements OnInit {
             const relatedRepositoryParameters = {
               'course': this.content.course,
               'institution': this.content.institution,
-              'assigment_code': this.content.assignment,
+              'code': this.content.assignment_code,
               'exclude_instructor': this.content.instructor,
             };
             this.API.getRepositoryReferenceByMetadata(relatedRepositoryParameters).subscribe(response => {

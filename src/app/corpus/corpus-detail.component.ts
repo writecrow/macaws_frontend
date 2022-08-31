@@ -41,6 +41,7 @@ export class CorpusDetailComponent implements OnInit {
             'institution': this.content.institution,
             'instructor': this.content.instructor,
             'exclude_id': this.content.filename,
+            'student': this.content.student
           };
           // Retrieve all texts with similar metadata
           this.API.getCorpusReferenceByMetadata(exactTexts).subscribe(response => {
@@ -48,23 +49,10 @@ export class CorpusDetailComponent implements OnInit {
               this.exactTexts = response;
             }
           });
-          // const relatedTexts = {
-          //   'course': this.content.course,
-          //   'institution': this.content.institution,
-          //   'assignment_name': this.content.assignment_name,
-          //   'genre': this.content.genre,
-          //   'excluded_instructor': this.content.instructor,
-          // };
-          // // Retrieve all texts with similar metadata
-          // this.API.getCorpusReferenceByMetadata(relatedTexts).subscribe(response => {
-          //   if (response && response !== '') {
-          //     this.relatedTexts = response;
-          //   }
-          // });
           const relatedTexts = {
             'course': this.content.course,
             'institution': this.content.institution,
-            'assignment_code': this.content.assignment,
+            'code': this.content.assignment,
             'excluded_instructor': this.content.instructor,
           };
           // Retrieve all texts with similar metadata
@@ -78,6 +66,8 @@ export class CorpusDetailComponent implements OnInit {
             'course': this.content.course,
             'institution': this.content.institution,
             'instructor': this.content.instructor,
+            'or_type': 'syllabus',
+            'or_code': this.content.assignment,
           };
           this.API.getRepositoryReferenceByMetadata(repositoryParameters).subscribe(response => {
             this.globals.inProgress = false;
@@ -88,7 +78,8 @@ export class CorpusDetailComponent implements OnInit {
           const relatedRepository = {
             'course': this.content.course,
             'institution': this.content.institution,
-            'genre': this.content.genre,
+            'or_code': this.content.assignment,
+            'or_type': 'Placeholder',
             'exclude_instructor': this.content.instructor,
           };
           this.API.getRepositoryReferenceByMetadata(relatedRepository).subscribe(response => {

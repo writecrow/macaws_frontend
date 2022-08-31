@@ -1,5 +1,5 @@
 export class RepositoryDetail {
-  assignment: string;
+  assignment_code: string;
   id: number;
   course: string;
   document_type: string;
