@@ -10,7 +10,7 @@ For the live version of the site, visit https://crow.corporaproject.org.
 * [Building your own corpus](#building-your-own-corpus)
 * [How to make changes to the code](#usage)
 * [How to construct requests via the API](#the-api)
-* [Test coverage: our commitment to awesomeness](#tests)
+* [Summary of linkages between corpus & repository](#linkages)
 
 # Architecture
 Corpora are big-data applications. They must be able to perform complex searches on large datasets. Thanks to the precedents of Google and Amazon, people expect web-based search portals to be fast. Very fast. In order to meet this expectation, a number of contemporary web design patterns must be followed:
@@ -93,14 +93,41 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+## Linkages
+The corpus & repository show related materials based on common metadata. The current logic of these linkages is summarized below:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Repository interface
 
-## Running end-to-end tests
+1. "Other course materials from this instructor"
+- Filter logic: same institution + same course + same instructor
+- Example: https://macaws.corporaproject.org/repository/1053
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+2. "Other instructors' materials for similar assignments"
+- Filter logic: same institution + same course + same assignment code + different instructor
+- Example: https://macaws.corporaproject.org/repository/1053
 
-## Further help
+3. "Student texts for this assignment from this instructor’s course"
+- Filter logic: same institution + same course + same semester + same year + same instructor + same assignment code
+- Example: https://macaws.corporaproject.org/repository/1053
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+4. "Student texts for similar assignments"
+- Filter logic:  same institution + same course + same assignment code + different instructor
+- Example: https://macaws.corporaproject.org/repository/1020
+
+### Corpus interface
+
+1. "Instructor materials related to this course"
+- Filter logic: same institution + same course + same instructor + same assignment code OR syllabus
+- Example: https://macaws.corporaproject.org/corpus/RSSS_201_ENG_0_DS_0097_DF_30019_UA
+
+2. "Instructor materials for similar assignments"
+- Filter logic: same institution + same course + same assignment code + different instructor
+- Example: https://macaws.corporaproject.org/corpus/RSSS_201_ENG_0_NR_0101_DF_30010_UA
+
+3. "Other texts from this instructor's [Course] course"
+- Filter logic: same institution + same course + same instructor + same student + different text ID
+- Example: https://macaws.corporaproject.org/corpus/RSSS_201_ENG_0_DS_0097_DF_30019_UA (The fact that they're all by the same student can be seen by the "30019" in the URL of any of the links.)
+
+4. "Student texts for similar assignments"
+- Filter logic: same institution + same course + same assignment code + different instructor
+- Example: https://macaws.corporaproject.org/corpus/PORT_325_MLT_0_DS_0047_DF_20213_UA
