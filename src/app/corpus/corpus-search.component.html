@@ -43,7 +43,7 @@
       <div class="details-wrapper">
         <div class="details-header" [ngClass]="(advancedSearch)?'open':'closed'" (click)="toggle('advancedSearch')">Advanced Search</div>
         <div class="details-body" [hidden]="!advancedSearch">
-          <p><strong>Tip:</strong> To search by phrase, place multiple words in quotation marks</p>
+          <p>To search across multiple target words, enter each, separated by a space. To search by phrase, place multiple words in quotation marks.</p>
           <strong>Multiple word handling: </strong>
           <input type="radio" name="or" (click)="setOperation('or')" [checked]="keywordMode === 'or'"  aria-label="or"> Contains any word
           <input type="radio" name="and" (click)="setOperation('and')" [checked]="keywordMode === 'and'"  aria-label="and"> Contains all words<br /><br />
