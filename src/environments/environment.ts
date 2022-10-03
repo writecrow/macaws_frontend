@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   backend: 'https://macaws.lndo.site/',
-  alt_text: '2427f8ce-f19a-4d66-b199-50eb1471928c',
-  alt_uuid: 'test',
+  alt_text: '8695738c-af3c-4ba7-a2f3-90e5db88636b',
+  alt_uuid: 'D1C21A255DCC0DD678DEC8AD54918340',
 };
 
 /*

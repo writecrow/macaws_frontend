@@ -21,9 +21,9 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/.htaccess",
               "src/robots.txt",
-              "src/sitemap.xml",
-              "src/.htaccess"
+              "src/sitemap.xml"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -34,7 +34,6 @@
               "src/macaws.css"
             ],
             "scripts": [],
-            "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -44,6 +43,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -54,12 +59,17 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
             },
             "development": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -70,7 +80,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
@@ -103,13 +112,15 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
             ],
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/.htaccess",
+              "src/robots.txt",
+              "src/sitemap.xml"
             ]
           }
         },
@@ -123,10 +134,37 @@
           }
         }
       }
+    },
+    "macaws-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "macaws:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "macaws:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "e2e//**/*.ts",
+              "e2e//**/*.html"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
-    "analytics": false,
+    "analytics": "7fe122c0-873c-44e0-9d60-323ded60e483",
     "schematicCollections": [
       "@angular-eslint/schematics"
     ]

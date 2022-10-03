@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
-import { Observable, empty } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Token } from '../services/tokenSchema';
@@ -12,7 +12,7 @@ import { Globals } from '../globals';
 @Injectable()
 export class LoginService {
   private mainUrl = environment.backend;  // URL to web api
-  private grant_type = "password"
+  private grant_type = "password";
   private client_text = environment.alt_text;
   private client_uuid = environment.alt_uuid;
 
@@ -27,7 +27,7 @@ export class LoginService {
 
   login(user, pass): Observable<Token> {
     const url = `${this.mainUrl}oauth/token`;
-    let body = new FormData();
+    const body = new FormData();
     body.append("grant_type", this.grant_type);
     body.append("client_id", this.client_text);
     body.append("client_secret", this.client_uuid);
@@ -35,19 +35,19 @@ export class LoginService {
     body.append("password", pass);
     return this.http.post(url, body).pipe(map((token: Token) => {
       localStorage.setItem('token', JSON.stringify(token.access_token));
-      localStorage.setItem('expiration', JSON.stringify(token.expires_in * 1000 + Date.now()))
+      localStorage.setItem('expiration', JSON.stringify(token.expires_in * 1000 + Date.now()));
       localStorage.setItem('refresh_token', JSON.stringify(token.refresh_token));
-      return token
-    }), 
-    catchError(this.handleError.handleError));
+      return token;
+    }),
+      catchError(this.handleError.handleError));
   }
 
   logout() {
     this.globals.isAuthenticated = false;
     this.requestCache.clearAll();
     localStorage.removeItem('token');
-    localStorage.removeItem('refresh_token'); 
-    return empty();
+    localStorage.removeItem('refresh_token');
+    return EMPTY;
   }
 
 }

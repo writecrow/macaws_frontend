@@ -14,6 +14,13 @@ export interface DialogData {
   preview: string;
 }
 
+// See https://stackoverflow.com/a/70390035
+declare global {
+  interface Navigator {
+    msSaveBlob: (blob: Blob, fileName: string) => boolean
+  }
+}
+
 @Component({
   templateUrl: '../corpus/corpus-search.component.html',
   styleUrls: ['../corpus/corpus-search.component.css']
