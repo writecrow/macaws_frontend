@@ -6,7 +6,7 @@ export class AssignmentDescriptionService {
 
   constructor() { }
 
-  getDescription(name, institution): string {
+  getDescription(name): string {
     for (var i in mockAssignmentDescriptions) {
       if (mockAssignmentDescriptions[i].name == name) {
         return mockAssignmentDescriptions[i].description;
