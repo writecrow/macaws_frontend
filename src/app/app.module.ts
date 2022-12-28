@@ -27,18 +27,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { APIService } from './services/api.service';
 import { RequestCache } from './services/request-cache.service';
 import { CachingInterceptor } from './interceptors/caching-interceptor.service';
-
 import { RequestInterceptor } from './interceptors/request.interceptor';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
 
-import { AssignmentDescriptionService } from './services/assignmentDescription.service';
 import { authorizeService } from './services/authorize.service';
-import { CourseDescriptionService } from './services/courseDescription.service';
 import { HandleErrorService } from './services/handle-error.service';
 import { LoginService } from './services/login.service';
 import { RefreshTokenService } from './services/refresh-token.service';
+import { ToggleDirective } from './authorize/toggle.directive';
 import { Globals } from './globals';
 
 // Pipes : Helper methods to alter behavior.
@@ -65,6 +63,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         RepositorySearchComponent,
         RepositoryDetailComponent,
         NotFoundComponent,
+        ToggleDirective,
     ],
     exports: [
         MatDialogModule,
@@ -81,8 +80,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     providers: [
         APIService,
         authorizeService,
-        AssignmentDescriptionService,
-        CourseDescriptionService,
         RepositoryHelper,
         Globals,
         HandleErrorService,

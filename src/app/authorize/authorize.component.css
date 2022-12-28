@@ -5,6 +5,7 @@ input {
   padding:0.25rem;
   margin:0.5rem 0 0.5rem 0;
   display:block;
+  width: 100%;
 }
 .status {
   border:1px solid #ddd;
@@ -12,4 +13,7 @@ input {
 }
 input#additional {
   display:none;
+}
+form.form-inline {
+  width: 300px;
 }
