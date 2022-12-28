@@ -36,6 +36,7 @@ export class CorpusSearchComponent {
   offset: number = 0;
   metadata = 1;
   numbering = 0;
+  resultDisplay = 'crowcordance';
   subcorpusWordcount: number;
   filters: any[] = [];
 
@@ -107,8 +108,9 @@ export class CorpusSearchComponent {
         currentParams[key] = null;
       }
     }
-    if (terms != "") {
+    if (terms !== "") {
       currentParams.search = this.sanitizer.sanitize(SecurityContext.URL, terms);
+      currentParams.display = this.resultDisplay;
     }
     else {
       currentParams.search = null;
@@ -203,6 +205,9 @@ export class CorpusSearchComponent {
       }
       if (typeof routeParams.offset != 'undefined' && routeParams.offset != "") {
         this.offset = routeParams.offset;
+      }
+      if (typeof routeParams.display !== 'undefined' && routeParams.display !== "") {
+        this.resultDisplay = routeParams.display;
       }
       if (typeof routeParams.numbering !== 'undefined' && routeParams.numbering !== "") {
         this.numbering = parseInt(routeParams.numbering);
@@ -304,6 +309,7 @@ export class CorpusSearchComponent {
   };
   reset() {
     this.searchString = "";
+    this.resultDisplay = 'crowcordance';
     this.method = "word";
     this.filters['searchByID'].value = "";
     this.offset = 0;
@@ -334,6 +340,10 @@ export class CorpusSearchComponent {
     } else {
       this[i] = false;
     }
+  }
+  setResults(value) {
+    this.resultDisplay = value;
+    this.router.navigate(['.'], { relativeTo: this.route, queryParams: { display: value }, queryParamsHandling: 'merge' });
   }
   toggleDisplay(key) {
     // Used to show/hide visualizations in an Angular way.

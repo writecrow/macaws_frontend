@@ -6,6 +6,9 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
   Header set Cache-Control "private"
 </IfModule>
 
+# Fix 'soft 404' in Google search console.
+Redirect 301 /home /
+
 <IfModule mod_rewrite.c>
   Options Indexes FollowSymLinks
   RewriteEngine On

@@ -85,6 +85,19 @@
       </table>
 
       <form class="search-display-options">
+        <div *ngIf="searchString !== ''" class="result-format">
+          <strong>Display format: </strong>
+          <label for="crowcordance">
+            <input type="radio" name="crowcordance" (click)="setResults('crowcordance')"
+              [checked]="resultDisplay === 'crowcordance'"
+              aria-label="Contextualized excerpts"> Contextualized in sentence
+          </label>&nbsp;
+          <label for="kwic">
+            <input type="radio" name="kwic" (click)="setResults('kwic')"
+              [checked]="resultDisplay === 'kwic'" aria-label="Concordance lines">
+            Keyword in context
+          </label>
+        </div>
         <div class="search-option">
           <label for="metadata">
             <input name="metadata" id="metadata" type="checkbox"
@@ -124,7 +137,8 @@
         <tbody>
           <tr class="search-result" *ngFor="let result of searchResults">
             <td class="table-cell" *ngIf="numbering === 1">{{ result.number }}</td>
-            <td [innerHTML]="result.text"></td>
+            <td class="{{ resultDisplay }}" [innerHTML]="result.text"></td>
+            <td class="link-to-text"><a href="{{ result.url }}">View &#8594;</a></td>
             <td class="semester-prefix" *ngIf="metadata">{{result.course_semester}} {{result.course_year}}</td>
             <td class="course-prefix" *ngIf="metadata">{{ result.course }} <div
                 *ngIf="result.course_description" class="tooltip-toggle"
@@ -137,10 +151,6 @@
             </td>
             <td class="draft-prefix" *ngIf="metadata">{{result.draft }} {{ result.instructor }}</td>
             <td class="wordcount-prefix" *ngIf="metadata">{{ result.wordcount }}</td>
-            <td class="link-to-text"><a routerLink="/corpus/{{ result.filename }}"
-                [queryParams]="{ search: searchString, method: method }"
-                routerLinkActive="active">View text &#8594;</a>
-            </td>
           </tr>
         </tbody>
       </table>
