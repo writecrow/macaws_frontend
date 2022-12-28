@@ -35,11 +35,12 @@ export class RepositorySearchComponent {
     } else {
     // The order in which these are pushed into the "Facets" object determine their order in the sidebar.
     this.Facets = <any>[];
-    this.Facets['language'] = { label: 'Target Language', index: '3' };
-    this.Facets['type'] = { label: 'Document Type', index: '1' };
-    this.Facets['genre'] = { label: 'Macro Genre', index: '2' };
-    this.Facets['topic'] = { label: 'Topic', index: '4' };
-    this.Facets['course'] = { label: 'Course', index: '0' };
+    this.Facets['language'] = { label: 'Target language', index: '4' };
+    this.Facets['type'] = { label: 'Document type', index: '2' };
+    this.Facets['genre'] = { label: 'Macro genre', index: '3' };
+    this.Facets['topic'] = { label: 'Assignment topic', index: '5' };
+    this.Facets['assignment_name'] = { label: 'Assignment name', index: '0' };
+    this.Facets['course'] = { label: 'Course', index: '1' };
     this.querySearch();
     }
   }
@@ -108,11 +109,13 @@ export class RepositorySearchComponent {
   }
 
   prepareFacets(facets) {
+    console.log(facets);
     this.facetKeys = Object.keys(this.Facets);
     // Loop through each of the defined facets for this repository and assign
     // values returned from the API to their object.
     // eslint-disable-next-line guard-for-in
     for (const name in this.Facets) {
+      console.log(name);
       const i = this.Facets[name].index;
       const facetOutput = [];
       if (typeof facets[i][0] !== 'undefined') {
@@ -137,7 +140,7 @@ export class RepositorySearchComponent {
       searchResults[i].label = this.repositoryHelper.getLabel(
         searchResults[i].document_type,
         searchResults[i].course,
-        searchResults[i].assignment,
+        searchResults[i].assignment_name,
         searchResults[i].topic,
       );
     }
