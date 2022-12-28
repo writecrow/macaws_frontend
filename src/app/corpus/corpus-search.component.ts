@@ -4,8 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from '../services/api.service';
 import { authorizeService } from '../services/authorize.service';
 import { CorpusDetail } from '../corpus/corpus-detail';
-import { CourseDescriptionService } from '../services/courseDescription.service';
-import { AssignmentDescriptionService } from '../services/assignmentDescription.service';
 import { Globals } from '../globals';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from '../../environments/environment';
@@ -36,7 +34,8 @@ export class CorpusSearchComponent {
   resultCount: number;
   excerptCount: number;
   offset: number = 0;
-  numbering: number = 0;
+  metadata = 1;
+  numbering = 0;
   subcorpusWordcount: number;
   filters: any[] = [];
 
@@ -63,8 +62,6 @@ export class CorpusSearchComponent {
     private API: APIService,
     public authorizeService: authorizeService,
     private sanitizer: DomSanitizer,
-    private courses: CourseDescriptionService,
-    private assignments: AssignmentDescriptionService,
     public globals: Globals,
     public dialog: MatDialog,
    ) {
@@ -81,14 +78,16 @@ export class CorpusSearchComponent {
       this.filters['toeflTotalMin'] = { backend_key: 'toefl_total_min', value: '' };
       this.filters['toeflTotalMax'] = { backend_key: 'toefl_total_max', value: '' };
 
-      // The order in which these are pushed into the "facets" object determine their   order in the sidebar.
+      // The order in which these are pushed into the "facets" object determine
+      // their order in the sidebar.
       this.facets = <any>[];
-      this.facets['target_language'] = { label: 'Target Language' };
+      this.facets['target_language'] = { label: 'Target language' };
       this.facets['course'] = { label: 'Course' };
-      this.facets['macro_genre'] = { label: 'Macro Genre' };
-      this.facets['assignment_topic'] = { label: 'Topic' };
+      this.facets['macro_genre'] = { label: 'Macro genre' };
+      this.facets['assignment_topic'] = { label: 'Assignment topic' };
+      this.facets['assignment_name'] = { label: 'Assignment name' };
+      this.facets['assignment_mode'] = { label: 'Assignment mode' };
       this.facets['draft'] = { label: 'Draft' };
-      this.facets['assignment_mode'] = { label: 'Mode of Assignment' };
       this.facets['grouped_l1'] = { label: 'L1' };
       this.querySearch();
     }
@@ -165,15 +164,9 @@ export class CorpusSearchComponent {
       if (typeof facets[name] !== 'undefined') {
         let facetKeys = Object.keys(facets[name]);
         let facetOutput = [];
-        for (let key in facetKeys) {
-          let id = facetKeys[key];
-          let data = { 'name': facetKeys[key], 'count': facets[name][id].count, 'active': facets[name][id].active, 'description': '' };
-          if (name == 'course') {
-            data.description = this.courses.getDescription(facetKeys[key]);
-          }
-          if (name == 'assignment') {
-            data.description = this.assignments.getDescription(facetKeys[key], "Purdue University");
-          }
+        for (const key in facetKeys) {
+          const id = facetKeys[key];
+          const data = { 'name': facetKeys[key], 'count': facets[name][id].count, 'active': facets[name][id].active, 'description': facets[name][id].description };
           facetOutput.push(data);
         }
         this.facets[name].values = facetOutput;
@@ -198,7 +191,7 @@ export class CorpusSearchComponent {
       this.searchResults = [];
       if (typeof routeParams.search != 'undefined') {
         this.searchString = routeParams.search;
-      }      
+      }
       if (typeof routeParams.method != 'undefined' && this.validMethods.includes(routeParams.method)) {
         this.method = routeParams.method;
       }
@@ -212,7 +205,7 @@ export class CorpusSearchComponent {
         this.offset = routeParams.offset;
       }
       if (typeof routeParams.numbering !== 'undefined' && routeParams.numbering !== "") {
-        this.numbering = routeParams.numbering;
+        this.numbering = parseInt(routeParams.numbering);
       }
       if (typeof routeParams.toefl_total_min != 'undefined' && routeParams.toefl_total_min != "") {
         this.filters['toeflTotalMin'].value = routeParams.toefl_total_min;
@@ -235,7 +228,7 @@ export class CorpusSearchComponent {
           let tokenValues = Object.values(response.frequency.tokens);
           for (let key in tokenKeys) {
             let id = tokenKeys[key];
-            this.frequencyData.push({ 
+            this.frequencyData.push({
               'token': id,
               'raw': tokenValues[key]["raw"],
               'normed': tokenValues[key]["normed"],
@@ -262,7 +255,7 @@ export class CorpusSearchComponent {
             }
           }
         });
-      }, 
+      },
       err => {
         // Handle 500s.
         this.searchInProgress = false;
@@ -272,13 +265,20 @@ export class CorpusSearchComponent {
   }
 
   prepareSearchResults(results) {
-    for (let r in results) {
-      results[r]["course_description"] = this.courses.getDescription(results[r].course);
-      results[r]["assignment_description"] = this.assignments.getDescription(results[r].assignment, "Purdue University");
+    // eslint-disable-next-line guard-for-in
+    for (const r in results) {
+      if (results[r].gender == null) {
+        results[r].gender = "N/A";
+      }
       results[r].number = parseInt(r) + 1 + Number(this.offset);
+      results[r].url = environment.baseUrl + 'corpus/' + results[r].filename + '?method=' + this.method;
+      if (this.searchString.length != 0) {
+        results[r].url = results[r].url + '&search=' + encodeURIComponent(this.searchString);
+      }
     }
     return results;
   }
+
   toggleFacet(i) {
     // Used to show/hide elements in an Angular way.
     // See https://stackoverflow.com/a/35163037
@@ -302,17 +302,6 @@ export class CorpusSearchComponent {
     document.execCommand("copy");
     document.removeEventListener("copy", listener);
   };
-  toggleNumbering() {
-    // Used to show/hide visualizations in an Angular way.
-    // See https://stackoverflow.com/a/35163037
-    if (this.numbering == 1) {
-      this.numbering = 0;
-    }
-    else {
-      this.numbering = 1;
-    }
-    this.router.navigate(['.'], { relativeTo: this.route, queryParams: { numbering: this.numbering }, queryParamsHandling: 'merge' });
-  }
   reset() {
     this.searchString = "";
     this.method = "word";
@@ -328,9 +317,14 @@ export class CorpusSearchComponent {
   setMethod(i) {
     this.method = i;
   }
-  nextPage(current) {
-    this.offset = parseInt(current) + 20;
-    this.router.navigate(['/corpus'], { queryParams: { offset : this.offset }, queryParamsHandling: 'merge' });
+  pager(direction, current) {
+    if (direction === 'next') {
+      this.offset = parseInt(current, 10) + 20;
+    }
+    else {
+      this.offset = parseInt(current, 10) - 20;
+    }
+    this.router.navigate(['/corpus'], { queryParams: { offset: this.offset }, queryParamsHandling: 'merge' });
   }
   toggle(i) {
     // Used to show/hide visualizations in an Angular way.
@@ -340,6 +334,17 @@ export class CorpusSearchComponent {
     } else {
       this[i] = false;
     }
+  }
+  toggleDisplay(key) {
+    // Used to show/hide visualizations in an Angular way.
+    // See https://stackoverflow.com/a/35163037
+    if (this[key] == 1) {
+      this[key] = 0;
+    }
+    else {
+      this[key] = 1;
+    }
+    this.router.navigate(['.'], { relativeTo: this.route, queryParams: { [key]: this[key] }, queryParamsHandling: 'merge' });
   }
   evaluateToggle(i) {
     return this[i];

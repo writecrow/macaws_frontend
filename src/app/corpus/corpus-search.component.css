@@ -58,7 +58,7 @@
   font-weight: bold;
 }
 .search-result .assignment-prefix::before {
-  content: "Assignment: ";
+  content: "Assignment name: ";
   font-weight: bold;
 }
 .search-result .gender-prefix::before {

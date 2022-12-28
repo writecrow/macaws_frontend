@@ -5,7 +5,7 @@
         <ul class="facet-items" [hidden]="!globals.corpusFacets[key]">
           <li *ngFor="let item of facets[key].values">
             <label>
-              <input (click)="facetSearch(key, item.name, item.active)" name="{{ key }}_{{ item.name }}" id="{{ key }}_{{ item.name }}" type="checkbox" checked="{{ item.active }}" attr.aria-label="{{ key }} {{ item.name }}" /> {{ item.name }} 
+              <input (click)="facetSearch(key, item.name, item.active)" name="{{ key }}_{{ item.name }}" id="{{ key }}_{{ item.name }}" type="checkbox" checked="{{ item.active }}" attr.aria-label="{{ key }} {{ item.name }}" /> {{ item.name }}
               <ng-container *ngIf="item.count > 1">({{item.count | number }} texts)</ng-container>
               <ng-container *ngIf="item.count === 1">({{item.count }} text)</ng-container>
               <div *ngIf="item.description" class="tooltip-toggle" attr.aria-label="{{ item.description }}">&nbsp;&#9432;</div>
@@ -21,7 +21,7 @@
         <label for="searchSubmit">
           <button name="searchSubmit" class="primary" (click)="textSearch(searchBox.value)">Search</button>
         </label>
-        <label for="resetSubmit">        
+        <label for="resetSubmit">
           <button name="resetSubmit" class="secondary" (click)="reset()">Reset</button>
         </label>
 
@@ -31,7 +31,7 @@
         <ng-container *ngIf="!exportUrl && searchInProgress === false">
           <button class="btn btn-disabled" disabled>Export</button><div class="tooltip-toggle" aria-label="To inquire about access to data exports, contact us at collaborate@writecrow.org">&nbsp;&#9432;</div>
         </ng-container>
-        
+
         <span class="search-progress">
           <span *ngIf="searchInProgress === true">
             <img class="loading" src="/assets/loading.svg" alt="Loading icon" height="50px" />
@@ -83,21 +83,21 @@
         </ng-container>
       </tbody>
       </table>
-      
+
       <form class="search-display-options">
         <div class="search-option">
           <label for="metadata">
-            <input name="metadata" id="metadata" type="checkbox" (click)="toggle('showMetadata')"
-              aria-label="Display excerpt metadata" [checked]="showMetadata" />
-            Display
-            metadata
+            <input name="metadata" id="metadata" type="checkbox"
+              (click)="toggleDisplay('metadata')" aria-label="Display excerpt metadata"
+              [checked]="metadata === 1" /> Display metadata
           </label>
         </div>
         <div class="search-option">
           <label for="numbering">
-            <input name="numbering" id="numbering" type="checkbox" (click)="toggleNumbering()"
+            <input name="numbering" id="numbering" type="checkbox"
+              (click)="toggleDisplay('numbering')"
               aria-label="Display concordance numbering on results"
-              [checked]="numbering === 1" />Number results
+              [checked]="numbering === 1" /> Display numbering
           </label>
         </div>
         <div class="search-option">
@@ -114,29 +114,29 @@
           <tr>
             <th *ngIf="numbering === 1">Number</th>
             <th>Excerpt</th>
-            <th *ngIf="showMetadata">Term</th>
-            <th *ngIf="showMetadata">Course</th>
-            <th *ngIf="showMetadata">Assignment</th>
-            <th *ngIf="showMetadata">Draft</th>
-            <th *ngIf="showMetadata">Wordcount</th>
+            <th *ngIf="metadata">Term</th>
+            <th *ngIf="metadata">Course</th>
+            <th *ngIf="metadata">Assignment Topic</th>
+            <th *ngIf="metadata">Draft</th>
+            <th *ngIf="metadata">Wordcount</th>
             <th>Link to text</th>
         </thead>
         <tbody>
           <tr class="search-result" *ngFor="let result of searchResults">
             <td class="table-cell" *ngIf="numbering === 1">{{ result.number }}</td>
             <td [innerHTML]="result.text"></td>
-            <td class="semester-prefix" *ngIf="showMetadata">{{result.course_semester}} {{result.course_year}}</td>
-            <td class="course-prefix" *ngIf="showMetadata">{{ result.course }} <div
+            <td class="semester-prefix" *ngIf="metadata">{{result.course_semester}} {{result.course_year}}</td>
+            <td class="course-prefix" *ngIf="metadata">{{ result.course }} <div
                 *ngIf="result.course_description" class="tooltip-toggle"
                 attr.aria-label="{{ result.course_description }}"></div>
             </td>
-            <td class="assignment-prefix" *ngIf="showMetadata">{{ result.assignment_topic }}
-              <div *ngIf="result.assignment_description" class="tooltip-toggle"
-                attr.aria-label="{{ result.assignment_description }}">&nbsp;&#9432;
+            <td class="assignment-prefix" *ngIf="metadata">{{ result.assignment_name }}
+              <div *ngIf="result.assignment_name_description" class="tooltip-toggle"
+                attr.aria-label="{{ result.assignment_name_description }}">&nbsp;&#9432;
               </div>
             </td>
-            <td class="draft-prefix" *ngIf="showMetadata">{{result.draft }} {{ result.instructor }}</td>
-            <td class="wordcount-prefix" *ngIf="showMetadata">{{ result.wordcount }}</td>
+            <td class="draft-prefix" *ngIf="metadata">{{result.draft }} {{ result.instructor }}</td>
+            <td class="wordcount-prefix" *ngIf="metadata">{{ result.wordcount }}</td>
             <td class="link-to-text"><a routerLink="/corpus/{{ result.filename }}"
                 [queryParams]="{ search: searchString, method: method }"
                 routerLinkActive="active">View text &#8594;</a>
@@ -145,7 +145,16 @@
         </tbody>
       </table>
 
-      <p class="centered" *ngIf="resultCount > 20 && (offset * 1 + 1) < resultCount"><button (click)="nextPage(offset)" class="btn primary">Next Page &#x2192;</button></p>
+      <div *ngIf="isLoaded" class="centered">
+        <span *ngIf="offset > 0">
+          <button (click)="pager('previous', offset)" class="btn primary">&#x2190;
+            Previous</button>
+        </span>&nbsp;&nbsp;&nbsp;
+        <span *ngIf="resultCount > 20 && (offset * 1 + 1) < resultCount">
+          <button (click)="pager('next', offset)" class="btn primary">Next
+            &#x2192;</button>
+        </span>
+      </div>
     </div>
   </div>
 </div>
