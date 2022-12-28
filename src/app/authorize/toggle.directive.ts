@@ -10,7 +10,7 @@ export class ToggleDirective {
   constructor(private el: ElementRef) {
     const parent = this.el.nativeElement.parentNode;
     const span = document.createElement('span');
-    span.innerHTML = '<img class="loading" src="/assets/eye-close.svg" alt="Hide password" />';
+    span.innerHTML = '<img src="/assets/eye-close.svg" alt="Hide password" />';
     span.addEventListener('click', () => {
       this.toggle(span);
     });
@@ -21,10 +21,10 @@ export class ToggleDirective {
     this._shown = !this._shown;
     if (this._shown) {
       this.el.nativeElement.setAttribute('type', 'text');
-      span.innerHTML = '<img class="loading" src="/assets/eye-open.svg" alt="Show password" />';
+      span.innerHTML = '<img src="/assets/eye-open.svg" alt="Show password" />';
     } else {
       this.el.nativeElement.setAttribute('type', 'password');
-      span.innerHTML = '<img class="loading" src="/assets/eye-close.svg" alt="Hide password"/>';
+      span.innerHTML = '<img src="/assets/eye-close.svg" alt="Hide password"/>';
     }
   }
 }

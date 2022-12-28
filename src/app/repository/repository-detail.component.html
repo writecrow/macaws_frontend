@@ -6,9 +6,9 @@
         <iframe [src]="content.embed_uri" style="width:100%; height:900px;" frameborder="0"></iframe>
       </mat-tab>
       <mat-tab label="Plaintext">
-        <div [innerHTML]="content.text | keepHtml"></div> 
+        <div [innerHTML]="content.text | keepHtml"></div>
       </mat-tab>
-    </mat-tab-group>      
+    </mat-tab-group>
   </div>
   <div class="col-md-4 order-1 order-xl-2 panel bigger">
     <h2>Download Original</h2>
@@ -58,16 +58,20 @@
           <td>{{ content.type }}</td>
         </tr>
         <tr *ngIf="content.language">
-          <th scope="row">Target Language</th>
+          <th scope="row">Target language</th>
           <td>{{ content.language }}</td>
         </tr>
         <tr *ngIf="content.genre">
-          <th scope="row">Macro Genre</th>
+          <th scope="row">Macro genre</th>
           <td>{{ content.genre }}</td>
         </tr>
         <tr *ngIf="content.topic">
           <th scope="row">Topic</th>
           <td>{{ content.topic }}</td>
+        </tr>
+        <tr *ngIf="content.assignment_name_description">
+          <th scope="row">Assignment description</th>
+          <td>{{ content.assignment_name_description }}</td>
         </tr>
         <tr *ngIf="content.institution">
           <th scope="row">Institution</th>

@@ -322,7 +322,7 @@ footer a, footer a:hover, footer a:focus {
 html, body { height: 100%; }
 
 .password-input {
-  position:relative;
+  position: relative;
 }
 
 .password-input span {

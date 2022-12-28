@@ -5,7 +5,6 @@ import { environment } from '../../environments/environment';
 import { LoginService } from '../services/login.service';
 import { Globals } from '../globals';
 import { APIService } from '../services/api.service';
-import { ToggleDirective } from './toggle.directive';
 @Component({
   templateUrl: '../authorize/authorize.component.html',
   styleUrls: ['../authorize/authorize.component.css'],
