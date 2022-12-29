@@ -250,16 +250,13 @@ export class CorpusSearchComponent {
         // Determine how to display the export button.
         // Note: this does not actually authorize folks to
         // retrieve data via the export.
-        this.API.getRoles().subscribe(response => {
-          if (response) {
-            if (response.includes('export_access')) {
-              if (searchUrl == '') {
-                searchUrl = '?';
-              }
-              this.exportUrl = searchUrl;
-            }
+        const roles = localStorage.getItem('user_roles');
+        if (roles !== null && roles.includes('export_access')) {
+          if (searchUrl == '') {
+            searchUrl = '?';
           }
-        });
+          this.exportUrl = searchUrl;
+        }
       },
       err => {
         // Handle 500s.
@@ -364,7 +361,7 @@ export class CorpusSearchComponent {
       if (response) {
         // Based on https://fullstacktips.blogspot.com/2018/06/generate-downloadable-csv-file-from.html
         let data = response;
-        let filename = "crow-export.csv";
+        let filename = "macaws-export.csv";
 
         var blob = data.constructor !== Blob
           ? new Blob([data], { type: 'text/csv' || 'application/octet-stream' })

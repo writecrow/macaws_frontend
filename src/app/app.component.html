@@ -13,7 +13,7 @@
       <div class="float-right">
         <form class="login" id="authentication">
           <label for="authSubmit">
-            <span *ngIf="globals.isAuthenticated && !globals.authenticating"><img class="avatar" src="assets/logo.png" alt="Avatar of a crow" /><em>Signed in</em>&nbsp;&nbsp;</span>
+            <span *ngIf="globals.isAuthenticated && !globals.authenticating"><img class="avatar" src="assets/logo.png" alt="Avatar of a macaw" /><em>Signed in</em>&nbsp;&nbsp;</span>
             <button *ngIf="globals.isAuthenticated" name="authSubmit" class="secondary" (click)="signOut()">Sign out</button>
             <button *ngIf="!globals.isAuthenticated && !globals.authenticating" name="authSubmit" class="secondary" (click)="signIn()">Sign in</button>
             <span *ngIf="globals.authenticating">Authenticating...</span>
