@@ -253,7 +253,7 @@ export class CorpusSearchComponent {
         const roles = localStorage.getItem('user_roles');
         if (roles !== null && roles.includes('export_access')) {
           if (searchUrl == '') {
-            searchUrl = '?';
+            searchUrl = 'offset=0';
           }
           this.exportUrl = searchUrl;
         }
