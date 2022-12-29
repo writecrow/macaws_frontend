@@ -112,6 +112,20 @@ export class APIService {
     return query;
   }
 
+  offlineCorpus() {
+    this.observable = this.http.get(environment.backend + 'corpus/offline?_format=json', {
+      observe: 'response', responseType: 'blob'
+    })
+      .pipe(map(response => {
+        this.observable = null;
+        if (response.status === 200) {
+          return response.body;
+        }
+      })
+      ).pipe(share());
+    return this.observable;
+  }
+
   searchRepository(params) {
     const queryParameters = [];
     if (typeof params.search !== 'undefined') {
@@ -154,7 +168,7 @@ export class APIService {
 
   // The abstracted method that all http requests use.
   getResponseFromPath(path, format = 'json') {
-    if (format == 'csv') {
+    if (format === 'csv') {
       this.observable = this.http.get(environment.backend + path + '&_format=' + format, {
         observe: 'response', responseType: 'text'
       })

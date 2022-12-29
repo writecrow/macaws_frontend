@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components.
 import { AuthorizeComponent } from './authorize/authorize.component';
+import { DownloadComponent } from './download/download.component';
 import { NotFoundComponent } from './404/notfound.component';
 import { HomeComponent } from './home/home.component';
 import { PageComponent } from './page/page.component';
@@ -15,9 +16,10 @@ import { RepositoryDetailComponent } from './repository/repository-detail.compon
 // Define the application's available page paths.
 const appRoutes: Routes = [
   { path: 'authorize', component: AuthorizeComponent},
-  { path: 'page/:id', component: PageComponent },
+  { path: 'download', component: DownloadComponent },
   { path: 'corpus', component: CorpusSearchComponent },
   { path: 'corpus/:id', component: CorpusDetailComponent },
+  { path: 'page/:id', component: PageComponent },
   { path: 'problems', component: ReportBugComponent },
   { path: 'repository/:id', component: RepositoryDetailComponent },
   { path: 'repository', component: RepositorySearchComponent },

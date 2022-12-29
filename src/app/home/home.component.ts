@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from '../services/api.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthorizeComponent } from '../authorize/authorize.component';
+import { Globals } from '../globals';
 
 @Component({
   templateUrl: '../home/home.component.html',
@@ -20,8 +21,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private API: APIService,
     private route: ActivatedRoute,
-    private router: Router,
-    public authComponent: AuthorizeComponent,
+    public globals: Globals,
+    private authComponent: AuthorizeComponent,
   ) { }
 
   ngOnInit(): void {

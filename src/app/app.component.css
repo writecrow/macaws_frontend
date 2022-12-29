@@ -44,24 +44,32 @@ nav form {
 .status button {
 	float: right;
 }
+.text-right {
+	text-align: right !important;
+}
 
 /* Adjustments for small displays */
 @media (max-width: 992px) {
 	nav {
-	  float:unset;
-	  text-align:center;
+		float: unset;
+		text-align: center;
+		display: table-row-group;
 	}
+
 	nav form {
-		display:block;
-		width:100%;
+		width: 100%;
+		text-align: right;
 	}
+
 	nav a {
-		font-size:0.9rem;
+		font-size: 0.9rem;
 		padding: 0.5em 0.5em;
 	}
+
 	.logo {
-    width:175px;
+		width: 300px;
 	}
+
 	.logo-wrapper {
 		text-align: center;
 	}

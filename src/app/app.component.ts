@@ -1,3 +1,4 @@
+import { APIService } from './services/api.service';
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { authorizeService } from './services/authorize.service';
@@ -14,18 +15,26 @@ declare const gtag: any;
 })
 export class AppComponent implements AfterViewInit, OnInit {
   constructor(
-    private router: Router,
+    private API: APIService,
     public authorizeService: authorizeService,
     public LoginService: LoginService,
     public globals: Globals,
-  ) { 
+    private router: Router,
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        // When a new page is navigated to, 
-        // clear out the status message.
+        // When a new page is navigated to, clear out the status message.
         this.globals.statusMessage = "";
-      } 
+      }
+      if (event instanceof NavigationEnd) {
+        this.globals.previousUrl = this.globals.currentUrl;
+        this.globals.currentUrl = event.url;
+      }
     });
+    const roles = localStorage.getItem('user_roles');
+    if (roles !== null && roles.includes('offline')) {
+      this.globals.downloadUrl = true;
+    }
   }
 
   ngOnInit(): void {

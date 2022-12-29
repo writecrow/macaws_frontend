@@ -9,20 +9,23 @@
       <h1><a routerLink="/">MACAWS</a></h1>
       <h4>Multilingual Academic Corpus of Assignments :<br />Writing & Speech</h4>
     </div>
-    <div class="col-md-6">
-      <nav>
-        <form id="authentication" class="form-inline">
+    <div class="col-md-6 justify-content-end">
+      <div class="float-right">
+        <form class="login" id="authentication">
           <label for="authSubmit">
-            <span *ngIf="globals.isAuthenticated && !globals.authenticating"><img class="avatar" src="assets/black-crow-shield.svg" alt="Avatar of a crow" /><em>Signed in</em>&nbsp;&nbsp;</span>
+            <span *ngIf="globals.isAuthenticated && !globals.authenticating"><img class="avatar" src="assets/logo.png" alt="Avatar of a crow" /><em>Signed in</em>&nbsp;&nbsp;</span>
             <button *ngIf="globals.isAuthenticated" name="authSubmit" class="secondary" (click)="signOut()">Sign out</button>
-        <div class="col text-right">
-          <a *ngIf="globals.isAuthenticated" routerLink="problems">&#9993; Provide feedback</a>
-        </div>
             <button *ngIf="!globals.isAuthenticated && !globals.authenticating" name="authSubmit" class="secondary" (click)="signIn()">Sign in</button>
             <span *ngIf="globals.authenticating">Authenticating...</span>
           </label>
-        </form> 
-      </nav>
+        </form>
+      </div>
+      <div class="utility-nav float-right">
+        <a *ngIf="globals.isAuthenticated" routerLink="problems">&#9993; Provide
+          feedback</a>
+        <a *ngIf="globals.downloadUrl" routerLink="download">Download corpus
+          &#8659;</a>
+      </div>
     </div>
   </div>
 </header>

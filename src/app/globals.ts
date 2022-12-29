@@ -6,6 +6,7 @@ export class Globals {
   inProgress = false;
   statusMessage: string = "";
   authenticating: boolean = false;
+  downloadUrl: boolean = false;
   corpusFacets: any[] = [];
   repositoryFacets: any[] = [];
   currentUrl = '';

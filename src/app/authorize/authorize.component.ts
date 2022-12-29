@@ -19,7 +19,7 @@ export class AuthorizeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public auth: authorizeService,
-    private api: APIService,
+    private API: APIService,
     public login: LoginService,
     private globals: Globals
   ) { }
@@ -45,6 +45,14 @@ export class AuthorizeComponent implements OnInit {
         } else {
           this.router.navigate(['/']);
         }
+        this.API.getRoles().subscribe(response => {
+          if (response) {
+            localStorage.setItem('user_roles', response);
+            if (response.includes('offline')) {
+              this.globals.downloadUrl = true;
+            }
+          }
+        });
         this.globals.isAuthenticated = true;
         this.globals.authenticating = false;
         this.globals.inProgress = false;
