@@ -74,3 +74,12 @@ nav form {
 		text-align: center;
 	}
 }
+
+.utility-nav ul {
+	list-style-type: none;
+	text-align: right;
+}
+
+.utility-nav li {
+	margin-top: 0.25rem;
+}

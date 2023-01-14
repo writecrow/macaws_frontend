@@ -8,23 +8,28 @@
     <div class="col-md-4 title">
       <h1><a routerLink="/">MACAWS</a></h1>
       <h4>Multilingual Academic Corpus of Assignments :<br />Writing & Speech</h4>
+
     </div>
-    <div class="col-md-6 justify-content-end">
-      <div class="float-right">
-        <form class="login" id="authentication">
-          <label for="authSubmit">
-            <span *ngIf="globals.isAuthenticated && !globals.authenticating"><img class="avatar" src="assets/logo.png" alt="Avatar of a macaw" /><em>Signed in</em>&nbsp;&nbsp;</span>
-            <button *ngIf="globals.isAuthenticated" name="authSubmit" class="secondary" (click)="signOut()">Sign out</button>
-            <button *ngIf="!globals.isAuthenticated && !globals.authenticating" name="authSubmit" class="secondary" (click)="signIn()">Sign in</button>
-            <span *ngIf="globals.authenticating">Authenticating...</span>
-          </label>
-        </form>
+    <div class="col-md-2">
+      <div class="row loading-message" *ngIf="globals.inProgress === true">
+        Processing... <img class="loading" src="/assets/loading.svg" alt="Loading icon" height="50px" />
       </div>
-      <div class="utility-nav float-right">
-        <a *ngIf="globals.isAuthenticated" routerLink="problems">&#9993; Provide
-          feedback</a>
-        <a *ngIf="globals.downloadUrl" routerLink="download">Download corpus
-          &#8659;</a>
+    </div>
+    <div class="col-md-4 justify-content-end">
+      <div class="row justify-content-end utility-nav">
+        <ul>
+          <li *ngIf="!globals.isAuthenticated && !globals.authenticating"><button
+              name="authSubmit" class="secondary" (click)="signIn()">Sign
+              in</button></li>
+          <li *ngIf="globals.isAuthenticated"><a class="button secondary"
+              routerLink="account">My account</a></li>
+          <li *ngIf="globals.isAuthenticated"><a class="button secondary"
+              routerLink="problems">Report a problem</a></li>
+          <li *ngIf="globals.downloadUrl"><a class="button secondary"
+              routerLink="download">Download corpus</a></li>
+          <li *ngIf="globals.isAuthenticated"><button name="authSubmit"
+              class="secondary" (click)="signOut()">Sign out</button></li>
+        </ul>
       </div>
     </div>
   </div>

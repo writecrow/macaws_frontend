@@ -112,6 +112,10 @@ export class APIService {
     return query;
   }
 
+  getUser() {
+    return this.getResponseFromPath('api/account');
+  }
+
   offlineCorpus() {
     this.observable = this.http.get(environment.backend + 'corpus/offline?_format=json', {
       observe: 'response', responseType: 'blob'
@@ -168,8 +172,12 @@ export class APIService {
 
   // The abstracted method that all http requests use.
   getResponseFromPath(path, format = 'json') {
+    let param = '?';
+    if (path.includes('?')) {
+      param = '&';
+    }
     if (format === 'csv') {
-      this.observable = this.http.get(environment.backend + path + '&_format=' + format, {
+      this.observable = this.http.get(environment.backend + path + param + '_format=' + format, {
         observe: 'response', responseType: 'text'
       })
         .pipe(map(response => {
@@ -182,7 +190,7 @@ export class APIService {
       return this.observable;
     }
     else {
-      this.observable = this.http.get(environment.backend + path + '&_format=' + format, {
+      this.observable = this.http.get(environment.backend + path + param + '_format=' + format, {
         observe: 'response'
       })
         .pipe(map(response => {
