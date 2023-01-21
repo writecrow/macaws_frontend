@@ -40,7 +40,6 @@ export class AppComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.globals.authenticating = false;
     this.globals.statusMessage = "";
-    console.log(this.authorizeService.isAuthenticated());
     if (this.authorizeService.isAuthenticated()) {
       this.globals.isAuthenticated = true;
     }

@@ -153,18 +153,10 @@ export class APIService {
     return this.getResponseFromPath('repository?' + query);
   }
 
-  submitIssue(title, description, contact, url, userAgent) {
-    this.observable = this.http.post<any>(environment.backend + 'submit-issue?_format=json', {
-      title: title,
-      description: description,
-      contact: contact,
-      url: url,
-      user_agent: userAgent,
-    }).pipe(map(response => {
+  postRequest(url, data) {
+    this.observable = this.http.post<any>(environment.backend + url + '?_format=json', data).pipe(map(response => {
       this.observable = null;
-      if (response.status === 200) {
-        return response.body;
-      }
+      return response;
     })
     ).pipe(share());
     return this.observable;
