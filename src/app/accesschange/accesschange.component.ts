@@ -28,7 +28,7 @@ export class AccessChangeComponent implements OnInit {
       this.router.navigate(['/authorize']);
     }
     this.route.params.subscribe((routeParams) => {
-      let allowed_roles = ['full', 'export', 'offline'];
+      let allowed_roles = ['fulltext', 'export', 'offline'];
       if (typeof routeParams.role !== 'undefined' && allowed_roles.includes(routeParams.role)) {
         this.role = routeParams.role;
       }
