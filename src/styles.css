@@ -358,3 +358,8 @@ html, body { height: 100%; }
 .utility-nav a {
   padding-right: 1rem;
 }
+
+/* Utility classes */
+.mt-2 {
+  margin-top: 2rem;
+}

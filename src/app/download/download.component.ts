@@ -30,13 +30,13 @@ export class DownloadComponent implements OnInit {
     this.href = this.router.url;
   }
 
-  offlineDownload() {
+  offlineDownload(language) {
     this.globals.inProgress = true;
-    this.API.offlineCorpus().subscribe(response => {
+    this.API.offlineCorpus(language).subscribe(response => {
       if (response) {
         // Based on https://fullstacktips.blogspot.com/2018/06/generate-downloadable-csv-file-from.html
         const data = response;
-        const filename = "macaws-offline-v1.zip";
+        const filename = "macaws-offline-" + language + "-v1.zip";
 
         const blob = data.constructor !== Blob
           ? new Blob([data], { type: 'text/zip' || 'application/octet-stream' })

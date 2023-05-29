@@ -116,8 +116,8 @@ export class APIService {
     return this.getResponseFromPath('api/account');
   }
 
-  offlineCorpus() {
-    this.observable = this.http.get(environment.backend + 'corpus/offline?_format=json', {
+  offlineCorpus(language) {
+    this.observable = this.http.get(environment.backend + 'corpus/offline?_format=json&language=' + language, {
       observe: 'response', responseType: 'blob'
     })
       .pipe(map(response => {
