@@ -110,7 +110,6 @@ export class CorpusSearchComponent {
     }
     if (terms !== "") {
       currentParams.search = this.sanitizer.sanitize(SecurityContext.URL, terms);
-      currentParams.display = this.resultDisplay;
     }
     else {
       currentParams.search = null;
@@ -208,6 +207,9 @@ export class CorpusSearchComponent {
       }
       if (typeof routeParams.display !== 'undefined' && routeParams.display !== "") {
         this.resultDisplay = routeParams.display;
+      }
+      else if (typeof routeParams.search !== 'undefined' && routeParams.search !== "") {
+        this.resultDisplay = 'kwic';
       }
       if (typeof routeParams.numbering !== 'undefined' && routeParams.numbering !== "") {
         this.numbering = parseInt(routeParams.numbering);
