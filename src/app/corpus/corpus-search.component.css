@@ -38,10 +38,14 @@
 }
 .search-display-options {
   width: -webkit-fill-available;
+  width: -moz-available;
 }
 .search-option {
   display: inline-block;
   margin-right: 0.25rem;
+}
+.search-option label {
+  display: inline-block;
 }
 .search-result td {
   display: inline-block;
@@ -79,6 +83,11 @@
 }
 .result-format {
   padding-top: 10px;
+  display: block;
+}
+.search-results-top h3 {
+  display: inline-block;
+  padding-right: 1rem;
 }
 .copy-table {
   float: right;

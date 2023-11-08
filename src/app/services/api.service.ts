@@ -89,7 +89,7 @@ export class APIService {
     return this.getResponseFromPath('corpus/export?' + path, 'csv');
   }
 
-  getCorpusSearchApiQuery(params, all = false) {
+  getCorpusSearchApiQuery(params, filenames = [], all = false) {
     const queryParameters = [];
     const nonFacets = ["method", "search", "id", "op", "toefl_total_min", "toefl_total_max"];
     const localParams = ["numbering"];
@@ -108,6 +108,9 @@ export class APIService {
       else {
         queryParameters.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
       }
+    }
+    if (filenames.length > 0) {
+      queryParameters.push('filenames=' + filenames.join('+'));
     }
     const query = Object.keys(queryParameters)
       .map(k => queryParameters[k])
