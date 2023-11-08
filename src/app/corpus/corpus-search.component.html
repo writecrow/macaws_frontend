@@ -54,6 +54,16 @@
       <form *ngIf="searchInProgress !== true" class="search-results-top">
         <h3>Matching texts: {{ resultCount | number }}</h3>
         <h3 *ngIf="subcorpusWordcount !== 0">Word count of subcorpus: {{ subcorpusWordcount | number }}<div class="tooltip-toggle" aria-label="Wordcount of all texts matching any filters applied.">&nbsp;&#9432;</div></h3>
+        <div class="search-option">
+          <button class="primary" (click)="openDialog()">Embed search results
+            &lt;/&gt;</button>
+        </div>
+        <div class="search-option">
+          <div class="tooltip-toggle" tabindex="0"
+            aria-label="Copy the HTML of the search results to your clipboard"><button
+              [className]="activeCopy === 'resulttable' ? 'copied secondary copy-clipboard' : 'secondary copy-clipboard'"
+              (click)="copyToClipboard(resulttable, 'resulttable')"></button></div>
+        </div>
       </form>
       <table class="frequency" *ngIf="frequencyData.length > 0">
         <thead>
@@ -98,27 +108,28 @@
             Keyword in context
           </label>
         </div>
-        <div class="search-option">
-          <label for="metadata">
-            <input name="metadata" id="metadata" type="checkbox"
-              (click)="toggleDisplay('metadata')" aria-label="Display excerpt metadata"
-              [checked]="metadata === 1" /> Display metadata
-          </label>
-        </div>
-        <div class="search-option">
-          <label for="numbering">
-            <input name="numbering" id="numbering" type="checkbox"
-              (click)="toggleDisplay('numbering')"
-              aria-label="Display concordance numbering on results"
-              [checked]="numbering === 1" /> Display numbering
-          </label>
-        </div>
-        <div class="search-option">
-          <button class="primary" (click)="openDialog()">Embed search results
-            &lt;/&gt;</button>
-        </div>
-        <div class="search-option">
-          <div class="tooltip-toggle" tabindex="0" aria-label="Copy the HTML of the search results to your clipboard"><button [className]="activeCopy === 'resulttable' ? 'copied secondary copy-clipboard' : 'secondary copy-clipboard'" (click)="copyToClipboard(resulttable, 'resulttable')"></button></div>
+        <div>
+          <span class="search-option">
+            <label for="metadata">
+              <input name="metadata" id="metadata" type="checkbox"
+                (click)="toggleDisplay('metadata')" aria-label="Display excerpt metadata"
+                [checked]="metadata === 1" /> Display metadata
+            </label>
+          </span>
+          <span class="search-option">
+            <label for="numbering">
+              <input name="numbering" id="numbering" type="checkbox"
+                (click)="toggleDisplay('numbering')"
+                aria-label="Display concordance numbering on results"
+                [checked]="numbering === 1" /> Display numbering
+            </label>
+          </span>
+          <span>
+            <label for="specific">
+              <input name="specific" type="checkbox" (click)="toggle('selectResults')"
+                aria-label="Select specific results" [checked]="selectResults" />Select specific results
+            </label>
+          </span>
         </div>
       </form>
 
@@ -136,6 +147,13 @@
         </thead>
         <tbody>
           <tr class="search-result" *ngFor="let result of searchResults">
+            <td class="table-cell" *ngIf="selectResults">
+              <label>
+                <input type="checkbox" (click)="toggleSelected(result.filename)"
+                  aria-label="Select specific results"
+                  [checked]="textIsSelected(result.filename)" />
+              </label>
+            </td>
             <td class="table-cell" *ngIf="numbering === 1">{{ result.number }}</td>
             <td class="{{ resultDisplay }}" [innerHTML]="result.text"></td>
             <td class="link-to-text"><a href="{{ result.url }}">View &#8594;</a></td>

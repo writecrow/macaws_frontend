@@ -37,6 +37,7 @@ export class CorpusSearchComponent {
   metadata = 1;
   numbering = 0;
   resultDisplay = 'crowcordance';
+  selectResults = false;
   subcorpusWordcount: number;
   filters: any[] = [];
 
@@ -90,6 +91,7 @@ export class CorpusSearchComponent {
       this.facets['assignment_mode'] = { label: 'Assignment mode' };
       this.facets['draft'] = { label: 'Draft' };
       this.facets['grouped_l1'] = { label: 'L1' };
+      this.globals.selectedTexts = [];
       this.querySearch();
     }
   }
@@ -314,6 +316,7 @@ export class CorpusSearchComponent {
     this.offset = 0;
     this.filters['toeflTotalMin'].value = "";
     this.filters['toeflTotalMax'].value = "";
+    this.globals.selectedTexts = [];
     this.router.navigate(['/corpus']);
   }
   setOperation(i) {
@@ -338,6 +341,19 @@ export class CorpusSearchComponent {
       this[i] = true;
     } else {
       this[i] = false;
+    }
+  }
+  textIsSelected(id) {
+    return this.globals.selectedTexts.includes(id);
+  }
+  toggleSelected(id) {
+    if (this.globals.selectedTexts.includes(id)) {
+      this.globals.selectedTexts = this.globals.selectedTexts.filter(function (item) {
+        return item !== id;
+      });
+    }
+    else {
+      this.globals.selectedTexts.push(id);
     }
   }
   setResults(value) {
@@ -390,7 +406,7 @@ export class CorpusSearchComponent {
     this.dialogToggle = true;
     this.route.queryParams.subscribe((routeParams) => {
       if (this.dialogToggle) {
-        let uri = this.API.getCorpusSearchApiQuery(routeParams, true);
+        const uri = this.API.getCorpusSearchApiQuery(routeParams, this.globals.selectedTexts, true);
         const dialogRef = this.dialog.open(DialogEmbedComponent, {
           width: 'fit-content',
           data: {

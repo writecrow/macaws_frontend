@@ -9,6 +9,7 @@ export class Globals {
   downloadUrl: boolean = false;
   corpusFacets: any[] = [];
   repositoryFacets: any[] = [];
+  selectedTexts: any[] = [];
   currentUrl = '';
   previousUrl = '';
 }
